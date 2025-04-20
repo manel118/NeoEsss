@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Boxicons -->
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<!-- My CSS -->
+	<link rel="stylesheet" href="esp-Etu.css">
+
+	<title>Espace Etudiant</title>
+</head>
+<body>
+
+
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="#" class="brand">
+			<i class='bx bxs-school'></i>
+			<span class="text">NeoEsss</span>
+		</a>
+		<ul class="side-menu top">
+			<li class="active">
+				<a href="#" id="btn-dashboard">
+					<i class='bx bxs-dashboard' ></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<a href="#" id="btn-my-courses">
+					<i class='bx bxs-group' ></i>
+					<span class="text"> My courses</span>
+				</a>
+			</li>
+			<li>
+				<a href="#" id="btn-my-grades">
+					<i class='bx bxs-group' ></i>
+					<span class="text"> My grades </span>
+				</a>
+			</li>
+			<li>
+				<a href="#" id="btn-schedule">
+					<i class='bx bxs-shopping-bag-alt' ></i>
+					<span class="text">Schedule </span>
+				</a>
+			</li>
+			<li>
+				<a href="#" id="btn-requests">
+					<i class='bx bxs-doughnut-chart' ></i>
+					<span class="text">Requests</span>
+				</a>
+			</li>
+			<li>
+				<a href="#" id="btn-notification">
+					<i class='bx bxs-message-dots' ></i>
+					<span class="text">notification</span>
+				</a>
+			</li>
+			
+		</ul>
+		<ul class="side-menu">
+			<!--
+			<li>
+				<a href="#">
+					<i class='bx bxs-cog' ></i>
+					<span class="text">Settings</span>
+				</a>
+			</li>
+			-->
+			<li>
+				<a href="#" class="logout">
+					<i class='bx bxs-log-out-circle' ></i>
+					<span class="text">Logout</span>
+				</a>
+			</li>
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+
+
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<i class='bx bx-menu' ></i>
+			<a href="#" class="nav-link">Categories</a>
+			<form action="#">
+				<div class="form-input">
+					<input type="search" placeholder="Search...">
+					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
+				</div>
+			</form>
+			
+			<input type="checkbox" id="switch-mode" hidden>
+			<label for="switch-mode" class="switch-mode"></label>
+			<a href="#" class="notification">
+				<i class='bx bxs-bell' ></i>
+				<span class="num">8</span>
+			</a>
+			<a href="#" class="profile">
+				<img src="people1.jpg">
+			</a>
+		</nav>
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main id="dashboard-section">
+			<div class="head-title">
+				<div class="left">
+					<h1>Dashboard</h1>
+					<ul class="breadcrumb">
+						<li>
+							<a href="#">Dashboard</a>
+						</li>
+						<li><i class='bx bx-chevron-right' ></i></li>
+						<li>
+							<a class="active" href="#">Home</a>
+						</li>
+					</ul>
+				</div>
+				<!--
+				<a href="#" class="btn-download">
+					<i class='bx bxs-cloud-download' ></i>
+					<span class="text">Download PDF</span>
+				</a>
+				-->
+			</div>
+
+			<!-- Student Information (left section) -->
+			<div class="student-info">
+				<h3>Student Information</h3>
+				<div class="info-container">
+					<div class="student-photo">
+						<img src="people1.jpg" alt="Student Photo">
+					</div>
+					<div class="student-details">
+						<p><strong>Name:</strong> Amel Hamou</p>
+						<p><strong>Level:</strong> Master 2</p>
+						<p><strong>Specialty:</strong> Systems Information</p>
+					</div>
+				</div>
+			</div>
+		
+			<!-- Progress Graph (right section) -->
+			<div class="progress-graph">
+				<h3>Progress Overview</h3>
+				<div class="graph-container">
+					<!-- Graph to represent progress, can be dynamically generated -->
+					<canvas id="progressChart" width="600" height="600"></canvas>
+
+				</div>
+			</div>
+		
+		</main>
+		<!-- MAIN -->
+
+
+
+
+	<!-- My Courses -->
+	<section id="my-courses" style="display: none;">
+		<h2 class="section-title">📚 My Courses</h2>
+		<div id="courses-container" class="courses-grid"></div>
+	</section>
+
+
+
+<!-- My Grades -->
+<section id="my-grades" style="display: none;" class="hidden-section">
+		<h2 class="section-title"> 🧮 My Grades</h2>
+		<div class="grades-container">
+			<table class="grades-table">
+				<thead>
+					<tr>
+						<th>Module</th>
+						<th>Coefficient</th>
+						<th>Note CC</th>
+						<th>Note Examen</th>
+						<th>Moyenne</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Mathématiques</td>
+						<td>3</td>
+						<td>12</td>
+						<td>14</td>
+						<td>13.33</td>
+					</tr>
+					<tr>
+						<td>Informatique</td>
+						<td>4</td>
+						<td>15</td>
+						<td>16</td>
+						<td>15.67</td>
+					</tr>
+					<tr>
+						<td>Réseaux</td>
+						<td>2</td>
+						<td>10</td>
+						<td>13</td>
+						<td>12.00</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	
+</section>
+
+
+
+
+<!--Requests -->
+<section id="requests" style="display: none;" class="hidden-section">  
+	
+	<h2 class="section-title"> 📜 Mes Demandes</h2>
+	
+	<div class="request-form">
+		<label for="request-type"> 🔘Type de demande :</label>
+		<select id="request-type">
+			<option value="attestation">Attestation de scolarité</option>
+			<option value="reclamation">Réclamation de note</option>
+			<option value="groupe">Changement de groupe</option>
+			<option value="autre">Autre</option>
+		</select>
+
+		<label for="request-message"> ✍️ Message :</label>
+		<textarea id="request-message" rows="4" placeholder="Écrivez votre message ici..."></textarea>
+
+		<label for="request-file"> 📎Fichier joint (optionnel) :</label>
+		<input type="file" id="request-file">
+
+		<button id="submit-request">Envoyer la demande</button>
+	</div>
+
+	<hr>
+
+	<h3>Historique de mes demandes</h3>
+	<div class="requests-history">
+		<table class="grades-table">
+			<thead>
+				<tr>
+					<th>Type</th>
+					<th>Message</th>
+					<th>Date</th>
+					<th>Statut</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Attestation</td>
+					<td>J’ai besoin pour un dossier</td>
+					<td>10-04-2025</td>
+					<td><span class="status pending">En attente</span></td>
+				</tr>
+				<tr>
+					<td>Réclamation</td>
+					<td>Erreur de note sur module Réseaux</td>
+					<td>01-04-2025</td>
+					<td><span class="status completed">Validée</span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>
+	
+
+
+ <!-- Schedule ======-->
+ <section id="schedule" style="display: none;"> 
+	<h2>Mon Emploi du Temps</h2>
+    
+    <div id="schedule-container">
+        <p>Chargement de l'emploi du temps...</p>
+        <!-- Tableau de l'emploi du temps -->
+        <table id="schedule-table">
+            <thead>
+                <tr>
+                    <th>Heure</th>
+                    <th>Dimanche</th>
+                    <th>Lundi</th>
+                    <th>Mardi</th>
+                    <th>Mercredi</th>
+                    <th>Jeudi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Lignes dynamiques pour chaque plage horaire -->
+                <tr>
+                    <td>08:00 - 09:30</td>
+                    <td id="sun-08"></td>
+                    <td id="mon-08"></td>
+                    <td id="tue-08"></td>
+                    <td id="wed-08"></td>
+                    <td id="thu-08"></td>
+                </tr>
+                <tr>
+                    <td>09:30 - 11:00</td>
+                    <td id="sun-09"></td>
+                    <td id="mon-09"></td>
+                    <td id="tue-09"></td>
+                    <td id="wed-09"></td>
+                    <td id="thu-09"></td>
+                </tr>
+                <tr>
+                    <td>11:00 - 12:30</td>
+                    <td id="sun-11"></td>
+                    <td id="mon-11"></td>
+                    <td id="tue-11"></td>
+                    <td id="wed-11"></td>
+                    <td id="thu-11"></td>
+                </tr>
+                <tr>
+                    <td>12:30 - 14:00</td>
+                    <td id="sun-12"></td>
+                    <td id="mon-12"></td>
+                    <td id="tue-12"></td>
+                    <td id="wed-12"></td>
+                    <td id="thu-12"></td>
+                </tr>
+                <tr>
+                    <td>14:00 - 15:30</td>
+                    <td id="sun-14"></td>
+                    <td id="mon-14"></td>
+                    <td id="tue-14"></td>
+                    <td id="wed-14"></td>
+                    <td id="thu-14"></td>
+                </tr>
+                <tr>
+                    <td>15:30 - 17:00</td>
+                    <td id="sun-15"></td>
+                    <td id="mon-15"></td>
+                    <td id="tue-15"></td>
+                    <td id="wed-15"></td>
+                    <td id="thu-15"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+	
+ </section>
+
+
+
+
+  <!-- notification -->
+  <section id="notification" style="display: none;" class="hidden-section"> 
+	<h2 class="section-title"> 🔔 Notifications</h2>
+
+	<div class="notifications-container">
+		<!-- Exemple de notification -->
+		<div class="notification-item unread">
+			<h4 class="notification-title">📢 Réunion pédagogique</h4>
+			<p class="notification-message">Une réunion est prévue le 15 avril à 10h en amphi 2.</p>
+			<span class="notification-date">13-04-2025</span>
+		</div>
+
+		<div class="notification-item">
+			<h4 class="notification-title">📘 Nouvelle note disponible</h4>
+			<p class="notification-message">Votre note de module "Systèmes d'information" est disponible.</p>
+			<span class="notification-date">10-04-2025</span>
+		</div>
+	</div>
+	</section>
+	
+
+	</section>
+	<!-- CONTENT -->
+
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+	<script src="esp-Etu.js"></script>
+	
+
+
+</body>
+</html>
