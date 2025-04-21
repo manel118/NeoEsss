@@ -23,6 +23,8 @@ mongoose.connect(dbURI)
         app.listen(3000)
     }).catch(err => console.log(err.message))
 
+
+    // website
 app.get('/', requireAuth, (req, res) => {
     if (req.user) {
         const user = req.user

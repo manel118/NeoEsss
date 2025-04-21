@@ -2,14 +2,13 @@ const jwt = require("jsonwebtoken")
 const Student = require("../Models/StudantModel")
 
 const requireAuth = (req, res, next) => {
-  const token = req.cookies.jwt 
+  const token = req.cookies.jwt
   //chenc if the token exist and is valid
   if (token) {
     jwt.verify(token, 'manel post post secret', (err, decoded) => {
       if (err) {
-        res.redirect(`${decoded.role}/login`)
-        console.log(err.message)
-
+        console.log("first error")
+        next()
       } else {
         req.user = decoded
         console.log(decoded)
@@ -18,30 +17,55 @@ const requireAuth = (req, res, next) => {
     })
   } else {
     // not logged in => redirect to login page
+    console.log("second error")
+
     next()
   }
 }
 
-// check current user
-const checkUser = (req, res, next) => {
-  const token = req.cookies.jwt;
+const requireAuthAdmin = (req, res, next) => {
+  const token = req.cookies.jwtAdmin
+  //chenc if the token exist and is valid
   if (token) {
-    jwt.verify(token, 'manel post post secret', async (err, decodedToken) => {
+    jwt.verify(token, 'manel post post secret', (err, decoded) => {
       if (err) {
-        res.locals.user = null;
-        next();
+        console.log("first error")
+        next()
       } else {
-
-
-        const user = getRelated(decodedToken)
-        res.locals.user = user;
-        next();
+        req.user = decoded
+        console.log(decoded)
+        next()
       }
-    });
+    })
   } else {
-    res.locals.user = null;
-    next();
+    // not logged in => redirect to login page
+    console.log("second error")
+
+    next()
   }
+}
+
+
+
+
+
+
+
+
+// check current user
+const checkUser = (role) => {
+  return (req, res, next) => {
+    const token = req.cookies.jwt;
+    if (!token) return res.redirect('/login');
+
+    jwt.verify(token, 'manel post post secret', (err, decoded) => {
+      if (err || decoded.role !== role) {
+        return res.status(403).send('Unauthorized');
+      }
+      req.user = decoded;
+      next();
+    });
+  };
 };
 
 
@@ -62,7 +86,7 @@ const getRelated = async (decoded) => {
 
 module.exports = {
   requireAuth,
-  checkUser
+  requireAuthAdmin
 
 }
 

@@ -45,11 +45,11 @@ const createToken = (id, role) => {
 
 
 const signup_get = (req, res) => {
-    res.render('signup');
+    // res.render('signup');
 }
 
 const login_get = (req, res) => {
-    res.render('login');
+    res.send("you are in website login page")
 }
 
 
@@ -83,7 +83,8 @@ const login_post = async (req, res) => {
             httpOnly: true,
             maxAge: maxAge * 1000
         })
-        res.status(200).redirect(`${role}/dashbord`) // should redirect to admin route or student/teacher route
+            res.status(200).redirect(`${role}/dashboard`) // should redirect to admin route or student/teacher route
+       
     } catch (err) {
         const errors = hundleErrors(err)
         res.status(400).json(errors)
