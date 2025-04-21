@@ -15,7 +15,7 @@ const User = require('../Models/UserModel')
 
 
 module.exports.login_get = async (req, res) => {
-        res.render()
+        res.render("Dashboard")
         res.send(`you're in admin login page`); // render
     } 
 
