@@ -1,20 +1,22 @@
 // controller actions
-const User = require("../Models/UserModel")
+
 const jwt = require("jsonwebtoken")
 const cookieParser = require("cookie-parser")
-
+const student = require("../Models/StudantModel")
+const teacher = require("../Models/TeacherModel")
+const admin = require("../Models/AdminModel")
 //hundleErrors 
 const hundleErrors = (err) => {
     console.log(err.message, err.code)
     let errors = { email: '', password: '' }
-     //inccorect email
-     if(err.message == "incorrect email" ){
+    //inccorect email
+    if (err.message == "incorrect email") {
         errors.email = "that email is  not regiteres"
-     }
-     //inccorect password
-     if(err.message == "incorrect password" ){
+    }
+    //inccorect password
+    if (err.message == "incorrect password") {
         errors.password = "that password is incorrect"
-     }
+    }
 
 
     // duplicate error code
@@ -33,8 +35,8 @@ const hundleErrors = (err) => {
 
 // create token
 const maxAge = 60 * 60 * 24 * 3
-const createToken = (id,role) => {
-    return jwt.sign({ id ,role}, 'manel post post secret', {
+const createToken = (id, role) => {
+    return jwt.sign({ id, role }, 'manel post post secret', {
         expiresIn: maxAge
     }) // id ()payload , secretkey , and the header is auto created
 }
@@ -52,14 +54,11 @@ const login_get = (req, res) => {
 
 
 const signup_post = async (req, res) => {
-    const { email, password } = req.body;
+    // do some changes  before using
+    const data = req.body;
+    delete data['role'];
     try {
-        const user = await User.create({ email, password })
-        const token = createToken(user._id)
-        res.cookie('jwt', token), {
-            httpOnly: true,
-            maxAge: maxAge * 1000
-        }
+        const user = await admin.create(data)
         res.status(201).json(user)
     } catch (err) {
         const errors = hundleErrors(err)
@@ -67,39 +66,57 @@ const signup_post = async (req, res) => {
     }
 }
 
+
 const login_post = async (req, res) => {
-    const { email, password , role} = req.body;
+    const { email, password, role } = req.body;
+    let model = getModel(role)
+
     //authentication
     // compare hashed password done in the user model
     try {
-        let user = await User.login(email, password ,role)
-        user = user.student
+
+        let user = await model.login(email, password)
         console.log(user)
         // atach a jwt
-        const token = createToken(user._id,role)
+        const token = createToken(user._id, role)
         res.cookie('jwt', token, {
             httpOnly: true,
             maxAge: maxAge * 1000
         })
-        res.status(200).json(user)
+
+        res.status(200).redirect(`${role}/dashbord`) // should redirect to admin route or student/teacher route
     } catch (err) {
         const errors = hundleErrors(err)
         res.status(400).json(errors)
     }
 }
 
-const logout_get =  (req,res)=>{
-    res.cookie('jwt','',{
-        maxAge : 1
+const logout_get = (req, res) => {
+    res.cookie('jwt', '', {
+        maxAge: 1
     })
     res.redirect('/')
 }
 
-module.exports ={
+function getModel(role) {
+    if (role == "student") {
+        return student
+    }
+    if (role == "teacher") {
+        return teacher
+    }
+    if (role == "admin") {
+        return admin
+    }
+}
+
+
+
+module.exports = {
     logout_get,
     login_post,
     signup_post,
     signup_get,
     login_get,
-    hundleErrors 
+    hundleErrors
 }

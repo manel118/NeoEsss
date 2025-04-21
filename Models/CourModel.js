@@ -5,7 +5,7 @@ const Courshema = new mongoose.Schema({
     title: String,
     subject: { type: mongoose.Schema.Types.ObjectId, ref: 'subject' },
     teacher: { type: mongoose.Schema.Types.ObjectId, ref: 'teacher' },
-    class: { type: mongoose.Schema.Types.ObjectId, ref: 'class' },
+    classe: { type: mongoose.Schema.Types.ObjectId, ref: 'class' },
     date: Date,
     content: String
   });

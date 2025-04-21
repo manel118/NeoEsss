@@ -8,6 +8,8 @@ const adminRouters = require('./routers/AdminRoute')
 const studentRouters = require('./routers/StudantRoute')
 const teacherRouters = require('./routers/TeacherRoute')
 const {requireAuth} = require('./middleware/authMiddleware')
+
+
 //midllewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -26,8 +28,10 @@ app.get('/', requireAuth, (req, res) => {
         const user = req.user
         req.user = user
          res.redirect(`/${user.role}/dashboard`);
-    } else {   res.send(" redirected to login page") }
+    } else {   res.send("home page") }
 })
+
+
 
 app.use(AuthRouter)
 

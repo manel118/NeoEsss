@@ -1,3 +1,4 @@
+//this is for teacher and student routes only
 
 const {Router} = require("express")
 const authController = require("../Controllers/AuthControler")

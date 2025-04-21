@@ -6,7 +6,7 @@ const requireAuth = (req, res, next) => {
   if (token) {
     jwt.verify(token, 'manel post post secret', (err, decoded) => {
       if (err) {
-        res.send("redirected to login screen")
+        res.redirect(`${decode.role}/login`)
         console.log(err.message)
 
       } else {
@@ -17,8 +17,7 @@ const requireAuth = (req, res, next) => {
     })
   } else {
     // not logged in => redirect to login page
-    res.send("redirected to login screen")
-
+    next()
   }
 }
 

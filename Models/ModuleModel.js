@@ -3,7 +3,7 @@ const ModuleSchema = new mongoose.Schema({
     nom: String,
     semestre: Number,
     coeff: Number,
-    class: { type: mongoose.Schema.Types.ObjectId, ref: 'class' }, // lien vers la spécialité
+    classe: { type: mongoose.Schema.Types.ObjectId, ref: 'class' }, // lien vers la spécialité
     enseignant: { type: mongoose.Schema.Types.ObjectId, ref: 'class' },// responsable du cours
     cours: [{
         nom: String,

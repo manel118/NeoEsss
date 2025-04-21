@@ -1,8 +1,15 @@
 const {Router} = require("express")
 const AdminControler = require("../Controllers/AdminControler")
+const {login_post , logout_get} = require("../Controllers/AuthControler")
 const router = Router()
-const {checkUser} = require("../middleware/authMiddleware")
-router.get("/dashboard",AdminControler.Dashbord_get)
-router.post('/create_student_account',AdminControler.create_student_account_post)
+const {requireAuth} = require("../middleware/authMiddleware")
+
+router.get("/login",requireAuth,AdminControler.login_get)
+router.post('/login', login_post);
+router.get('/logout', logout_get);
+router.get("/dashboard",requireAuth,AdminControler.Dashbord_get)
+router.post('/create_student_account',requireAuth,AdminControler.create_user_account_post)
+
+//login
 
 module.exports = router
