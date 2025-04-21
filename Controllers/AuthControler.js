@@ -83,7 +83,6 @@ const login_post = async (req, res) => {
             httpOnly: true,
             maxAge: maxAge * 1000
         })
-
         res.status(200).redirect(`${role}/dashbord`) // should redirect to admin route or student/teacher route
     } catch (err) {
         const errors = hundleErrors(err)

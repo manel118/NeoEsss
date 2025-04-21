@@ -15,6 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
+app.use(cookieParser())
 
 //connect to DB
 mongoose.connect(dbURI)
@@ -25,7 +26,6 @@ mongoose.connect(dbURI)
 app.get('/', requireAuth, (req, res) => {
     if (req.user) {
         const user = req.user
-        req.user = user
          res.redirect(`/${user.role}/dashboard`);
     } else {   res.send("home page") }
 })
@@ -36,15 +36,13 @@ app.use(AuthRouter)
 
 // cookies
 app.get('/set_cookies', (req, res) => {
-    res.setHeader('Set-Cookie', 'newUser=true', {
-        maxAge: 1
-    }) // header name and value == cookies idenfidication
-    res.cookie('newUser2', false, {
-        httpOnly: true,
-        maxAge: 1,
-        secure: true,
-        httpOnly: true // can't access it from front-end
-    });
+  // header name and value == cookies idenfidication
+    // res.cookie('newUser2', false, {
+    //     httpOnly: true,
+    //     maxAge: 1,
+    //     secure: true,
+    //     httpOnly: true // can't access it from front-end
+    // });
     res.cookie('jwt', false, {
         httpOnly: true
     })

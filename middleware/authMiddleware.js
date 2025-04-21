@@ -1,12 +1,13 @@
 const jwt = require("jsonwebtoken")
 const Student = require("../Models/StudantModel")
+
 const requireAuth = (req, res, next) => {
-  const token = req.cookies.jwt
+  const token = req.cookies.jwt 
   //chenc if the token exist and is valid
   if (token) {
     jwt.verify(token, 'manel post post secret', (err, decoded) => {
       if (err) {
-        res.redirect(`${decode.role}/login`)
+        res.redirect(`${decoded.role}/login`)
         console.log(err.message)
 
       } else {
