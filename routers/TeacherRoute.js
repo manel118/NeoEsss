@@ -3,7 +3,7 @@ const teacherControler = require("../Controllers/TeacherController")
 const router = Router()
 const {requireAuth} = require("../middleware/authMiddleware")
 
-router.get("/dashbord",requireAuth,teacherControler.Dashbord_get)
+router.get("/dashboard",requireAuth,teacherControler.Dashbord_get)
 
 
 
