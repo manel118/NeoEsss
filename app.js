@@ -8,13 +8,17 @@ const adminRouters = require('./routers/AdminRoute')
 const studentRouters = require('./routers/StudantRoute')
 const teacherRouters = require('./routers/TeacherRoute')
 const {requireAuth} = require('./middleware/authMiddleware')
-
+const path = require("path")
 
 //midllewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
+app.set('views', [path.join(__dirname, 'views'),
+    path.join(__dirname, 'views/website/'),
+    path.join(__dirname, 'views/index/'),  path.join(__dirname, 'views/Login-admin/'),  path.join(__dirname, 'views/esp-Ens/'),
+    path.join(__dirname, 'views/esp-Etu/'),  path.join(__dirname, 'views/Dashboard/')]);
 app.use(cookieParser())
 
 //connect to DB
@@ -29,7 +33,7 @@ app.get('/', requireAuth, (req, res) => {
     if (req.user) {
         const user = req.user
          res.redirect(`/${user.role}/dashboard`);
-    } else {   res.send("home page") }
+    } else {   res.render("website") }
 })
 
 

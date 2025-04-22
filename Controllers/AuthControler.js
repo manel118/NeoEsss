@@ -49,7 +49,7 @@ const signup_get = (req, res) => {
 }
 
 const login_get = (req, res) => {
-    res.send("you are in website login page")
+    res.render("index")
 }
 
 
