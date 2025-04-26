@@ -66,9 +66,11 @@ module.exports.Dashbord_get = async (req, res) => {
 
 // add a teacher or a studant
 module.exports.create_user_account_post = async (req, res) => {
+  
     let Model
     let role = req.body.role
     let data = req.body.user
+    console.log(data)
     if (role == "teacher") {
         Model = teacher
     }
@@ -117,7 +119,7 @@ module.exports.get_users = async function (req, res) {
         }
         console.log(users)
 
-        res.json(users); // Send data as JSON response
+        res.json({users}); // Send data as JSON response
     } catch (err) {
         res.status(500).json({ message: `Error fetching ${role}s`, err });
         console.log(err)
@@ -178,14 +180,16 @@ module.exports.add_module = async function (req, res) {
         niveau: niv
     })
     data = classid ? { ...data, classe: classid._id } : data
-    //  affect to a teacher
-    await teacher.updateOne({ _id: data.teacher }, { $push: { classe: data.classe } })
+    console.log(classid)
 
-    ModuleModel.create(data).then(result => {
-        res.json(result)
-        console.log(result)
+    //  affect to a teacher
+    await teacher.updateOne({ _id: data.teacher }, { $addToSet: { classe: data.classe } })
+
+    ModuleModel.create(data).then(module => {
+        res.json({module})
+        console.log(module)
     }).catch(err => {
-        res.json(err)
+        res.json({err})
         console.log(err)
     })
 
@@ -195,11 +199,11 @@ module.exports.add_module = async function (req, res) {
 module.exports.get_modules = async function (req, res) {
     const data = await ModuleModel.find().populate("classe").populate("teacher").populate("matiere")
     try {
-        res.json(data)
-        console.log(data)
+        res.json({data})
+        // console.log(data)
 
     } catch (err) {
-        res.json(err)
+        res.json({err})
         console.log(err)
 
     }

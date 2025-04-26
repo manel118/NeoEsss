@@ -227,8 +227,8 @@ teacherForm.addEventListener('submit', async function (e) {
     })
     const data = await res.json()
 
-    if (data.user) {
-      console.log("new teacher added", data.user)
+    if (data.users) {
+      console.log("new teacher added", data.users)
     }
     if (data.errors) {
       console.log(data.errors);
@@ -272,12 +272,12 @@ async function fetchTeachers() {
       headers: { 'Content-Type': 'application/json' }
     })
 
-    const teachers = await res.json();
-
+    const result = await res.json();
+if(result.users){
     const tableBody = document.querySelector('#teacherTable tbody');
     tableBody.innerHTML = ''; // Clear any existing rows
 
-    teachers.forEach(teacher => {
+    result.users.forEach(teacher => {
       const row = document.createElement('tr');
 
       // Create table data for each teacher
@@ -294,7 +294,11 @@ async function fetchTeachers() {
       `;
 
       tableBody.appendChild(row);
-    });
+    });}
+    else if(result.err){
+    console.error(err.message , err);
+
+    }
   } catch (err) {
     console.error('Error fetching teachers:', err);
   }
@@ -396,8 +400,8 @@ studentForm.addEventListener('submit', async function (e) {
     })
     const data = await res.json()
 
-    if (data) {
-      console.log("new student added secssefully", data.user)
+    if (data.users) {
+      console.log("new student added secssefully", data.users)
     }
     if (data.errors) {
       console.log(data.errors);
@@ -465,13 +469,13 @@ async function fetchStudents() {
     if (result.err) {
       console.error(result.message, result.err);
     }
-    else {
+    else if(result.users){
 
       const tableBody = document.querySelector('#studentTable tbody');
       tableBody.innerHTML = ''; // Clear any existing rows
       console.log(result)
 
-      result.forEach(student => {
+      result.users.forEach(student => {
         const row = document.createElement('tr');
 
         // Create table data for each teacher
@@ -508,7 +512,7 @@ const searchModuleInput = document.getElementById('searchModuleInput');
 addModuleBtn.addEventListener('click', () => moduleModal.classList.add('show'));
 closeModuleModalBtn.addEventListener('click', () => moduleModal.classList.remove('show'));
 
-// ajouter du formulaire
+// ajouter du module
 moduleForm.addEventListener('submit', async function (e) {
   e.preventDefault();
 
@@ -528,11 +532,11 @@ moduleForm.addEventListener('submit', async function (e) {
       headers: { 'Content-Type': 'application/json' }
     })
 
-    const data = await res.json()
+    const data = await result.json()
 
     if (data.module) {
       console.log("new module added secssefully", data.module)
-     await fetchModules()
+      await fetchModules()
 
     }
     if (data.err) {
@@ -559,13 +563,13 @@ async function fetchModules() {
     if (result.err) {
       console.error(result.message, result.err);
     }
-    else if (result) {
+    else if (result.data) {
 
       const tableBody = document.querySelector('#moduleTable tbody');
       tableBody.innerHTML = ''; // Clear any existing rows
-      console.log(result)
+      console.log(result.data)
 
-      result.forEach(module => {
+      result.data.forEach(module => {
         const row = document.createElement('tr');
 
         // Create table data for each teacher
@@ -602,45 +606,45 @@ searchModuleInput.addEventListener('input', function () {
 
 
 // Fonction pour gérer les clics sur les boutons Modifier et Supprimer // for module
-moduleTable.addEventListener('click', function (e) {
-  const target = e.target;
-  const row = target.closest('tr');
+// moduleTable.addEventListener('click', function (e) {
+//   const target = e.target;
+//   const row = target.closest('tr');
 
-  if (target.classList.contains('delete-btn')) {
-    if (confirm('Voulez-vous vraiment supprimer ce module ?')) {
-      row.remove();
-    }
-  }
+//   if (target.classList.contains('delete-btn')) {
+//     if (confirm('Voulez-vous vraiment supprimer ce module ?')) {
+//       row.remove();
+//     }
+//   }
 
-  if (target.classList.contains('edit-btn')) {
-    // Remplir le formulaire avec les données existantes
-    const name = row.cells[0].textContent;
-    const coef = row.cells[1].textContent;
-    const classes = row.cells[2].textContent;
-    const modEnseignant = row.cells[4].textContent;
-    //const classes = row.cells[2].textContent.split(', ');
-    const semester = row.cells[3].textContent;
+//   if (target.classList.contains('edit-btn')) {
+//     // Remplir le formulaire avec les données existantes
+//     const name = row.cells[0].textContent;
+//     const coef = row.cells[1].textContent;
+//     const classes = row.cells[2].textContent;
+//     const modEnseignant = row.cells[4].textContent;
+//     //const classes = row.cells[2].textContent.split(', ');
+//     const semester = row.cells[3].textContent;
 
-    document.getElementById('moduleName').value = name;
-    document.getElementById('coefficient').value = coef;
-    document.getElementById('semester').value = semester;
-    document.getElementById('modEnseignant').value = modEnseignant;
-    document.getElementById('classList').value = classes;
+//     document.getElementById('moduleName').value = name;
+//     document.getElementById('coefficient').value = coef;
+//     document.getElementById('semester').value = semester;
+//     document.getElementById('modEnseignant').value = modEnseignant;
+//     document.getElementById('classList').value = classes;
 
 
-    // Cocher les cases correspondantes
-    //const checkboxes = document.querySelectorAll('#classList input[type="checkbox"]');
-    //checkboxes.forEach(cb => {
-    //    cb.checked = classes.includes(cb.value);
-    // });
+//     // Cocher les cases correspondantes
+//     //const checkboxes = document.querySelectorAll('#classList input[type="checkbox"]');
+//     //checkboxes.forEach(cb => {
+//     //    cb.checked = classes.includes(cb.value);
+//     // });
 
-    // Supprimer la ligne actuelle (sera remplacée après enregistrement)
-    row.remove();
+//     // Supprimer la ligne actuelle (sera remplacée après enregistrement)
+//     row.remove();
 
-    // Réouvrir le modal
-    moduleModal.classList.add('show');
-  }
-});
+//     // Réouvrir le modal
+//     moduleModal.classList.add('show');
+//   }
+// });
 
 // Schedule Management ================
 
