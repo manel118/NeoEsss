@@ -1,46 +1,54 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Admin Login Page</title>
-	<link rel="stylesheet" type="text/css" href="login.css">
+	<link rel="stylesheet" type="text/css" href="/css/login.css">
 	<link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
 	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
+
 <body>
-	<img class="wave" src="img/wave3.jpg">
+	<img class="wave" src="/images/wave3.jpg">
 	<div class="container">
 		<div class="img">
-			<img src="img/bg7.jpg">
+			<img src="/images/bg7.jpg">
 		</div>
 		<div class="login-content">
 			<form action="index.html">
-				<img src="img/avatar2.png">
+				<img src="/images/avatar2.png">
 				<h2 class="title">Welcome</h2>
 
-           		<div class="input-div one">
-           		   <div class="i">
-           		   		<i class="fas fa-user"></i>
-           		   </div>
-           		   <div class="div">
-           		   		<input type="text" class="input" placeholder="Username">
-           		   </div>
-           		</div>
+				<div class="input-div one">
+					<div class="i">
+						<i class="fas fa-user"></i>
+					</div>
+					<div class="div">
+						<input type="text" class="input" placeholder="Username">
+					</div>
+				</div>
+				<!-- Error message for username -->
+				<div class="username error"></div>
 
-           		<div class="input-div pass">
-           		   <div class="i"> 
-           		    	<i class="fas fa-lock"></i>
-           		   </div>
-           		   <div class="div">
-           		    	<input type="password" class="input" placeholder="Password">
-            	   </div>
-            	</div>
+				<div class="input-div pass">
+					<div class="i">
+						<i class="fas fa-lock"></i>
+					</div>
+					<div class="div">
+						<input type="password" class="input" placeholder="Password">
+					</div>
+				</div>
+				<!-- Error message for password -->
+				<div class="password error"></div>
 
-            	<a href="#">Forgot Password?</a>
-            	<input type="submit" class="btn" value="Login">
-            </form>
-        </div>
-    </div>
-    <script type="text/javascript" src="js/login.js"></script>
+				<a href="#">Forgot Password?</a>
+
+				<input type="submit" class="btn" value="Login">
+			</form>
+		</div>
+	</div>
+	<script src="/js/login.js"></script>
 </body>
+
 </html>

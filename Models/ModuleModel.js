@@ -1,15 +1,17 @@
 const mongoose = require("mongoose")
 const ModuleSchema = new mongoose.Schema({
-    nom: String,
-    semestre: Number,
-    coeff: Number,
+    semestre: String,
+    matiere: { type: mongoose.Schema.Types.ObjectId, ref: 'matiere' },
     classe: { type: mongoose.Schema.Types.ObjectId, ref: 'class' }, // lien vers la spécialité
-    enseignant: { type: mongoose.Schema.Types.ObjectId, ref: 'class' },// responsable du cours
+    teacher: { type: mongoose.Schema.Types.ObjectId, ref: 'teacher' },// responsable du cours
     cours: [{
         nom: String,
         pathDoc: String
     }]
 })
+
+
+
 const ModuleModel = mongoose.model('module', ModuleSchema)
 module.exports = ModuleModel
 

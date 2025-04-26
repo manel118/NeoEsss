@@ -13,7 +13,8 @@ module.exports.get_login = async (req,res)=>{
 
 module.exports.Dashbord_get = async (req,res)=>{
     const teacher = await Teacher.findById(req.user.id)
-    res.send(`you are in the teacher dashbord , teacher : ${teacher.nom}`);
+    res.render("esp-Ens")
+  console.log(` teacher : ${teacher}`);
 
 }
 

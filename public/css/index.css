@@ -9,7 +9,7 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url(esss2.jpg) no-repeat;
+    background: url(../images/esss2.jpg) no-repeat;
     background-size: cover;
     background-position: center;
   }
@@ -109,7 +109,7 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url(esss.jpg) no-repeat center center/cover;
+    background: url(../images/esss.jpg) no-repeat center center/cover;
   }
   
   .login-card {
@@ -125,7 +125,7 @@
   
   .login-image {
     flex: 1;
-    background: url(esss2.jpg) no-repeat center center/cover;
+    background: url(../images/esss2.jpg) no-repeat center center/cover;
   }
   
   .wrapper {

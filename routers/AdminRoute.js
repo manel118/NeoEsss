@@ -8,7 +8,14 @@ router.get("/login",requireAuthAdmin,AdminControler.login_get)
 router.post('/login', AdminControler.login_post);
 router.get('/logout', AdminControler.logout_get);
 router.get("/dashboard",requireAuthAdmin,AdminControler.Dashbord_get)
-router.post('/create_student_account',AdminControler.create_user_account_post)
+router.post("/get_users",AdminControler.get_users)
+router.post('/add_new_user',AdminControler.create_user_account_post)
+router.delete('/delete-teacher/:id',AdminControler.delete_teacher)
+router.get("/fix_classes",AdminControler.fix_classes)
+
+//module section functions
+router.post("/add_module",AdminControler.add_module)
+router.get("/get_modules",AdminControler.get_modules)
 
 //login
 

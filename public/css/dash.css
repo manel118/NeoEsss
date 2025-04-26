@@ -6,6 +6,15 @@
 	box-sizing: border-box;
 }
 
+
+.edit{
+
+}
+
+.delete{
+
+}
+
 a {
 	text-decoration: none;
 }
@@ -717,6 +726,7 @@ button.btn-close {
     display: block;
     flex-direction:column;
     gap: 5px; /* Espace entre les champs */
+	padding:   10px;
 }
 
 /* Style pour chaque champ */

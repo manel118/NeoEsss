@@ -5,9 +5,7 @@ const mongoose = require("mongoose");
 const classSchema = new mongoose.Schema({
   spécialité: String,
   niveau: String,
-  nombreEtudient: Number,
   students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'student', default: null }],
-  modules: [{ type: mongoose.Schema.Types.ObjectId, ref: 'subject', default: null }], // pour que l'etudient peut voir les cour corresponts
   salle: String
 });
 

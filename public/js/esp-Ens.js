@@ -577,9 +577,8 @@ document.addEventListener('click', function (e) {
   
 	  // Optionnel : confirmation
 	  if (confirm("Voulez-vous vraiment vous déconnecter ?")) {
-		localStorage.clear();
-		sessionStorage.clear();
-		window.location.href = '../index/index.html'; // ajuste le chemin si besoin
+		
+		window.location.href = '/logout'; // ajuste le chemin si besoin
 	  }
 	}
   });

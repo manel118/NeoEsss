@@ -70,6 +70,7 @@ const signup_post = async (req, res) => {
 const login_post = async (req, res) => {
     const { email, password, role } = req.body;
     let model = getModel(role)
+    console.log(model)
 
     //authentication
     // compare hashed password done in the user model
@@ -83,11 +84,10 @@ const login_post = async (req, res) => {
             httpOnly: true,
             maxAge: maxAge * 1000
         })
-            res.status(200).redirect(`${role}/dashboard`) // should redirect to admin route or student/teacher route
-       
+        res.status(200).json({ user : user._id }); // should redirect to admin route or student/teacher route
     } catch (err) {
         const errors = hundleErrors(err)
-        res.status(400).json(errors)
+        res.status(400).json({ errors })
     }
 }
 

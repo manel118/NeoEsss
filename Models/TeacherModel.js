@@ -3,25 +3,25 @@ const { isEmail } = require("validator")
 const bcrypt = require("bcrypt")
 const TeacherSchema = new mongoose.Schema({
     nom: String,
-    prenom : String,
-    email: String,
+    prenom: String,
     telephone: String,
-    status : String ,
-    classe: [{type: mongoose.Schema.Types.ObjectId, ref: 'class', default :null}],
-      email: {
-            type: String,
-            required: [true, 'Please enter an email'],
-            unique: true,
-            lowercase: true,
-            validate: [(val) => { return isEmail(val) }, 'Please enter a valid email']
-        },
-        password: {
-            type: String,
-            minlength: [6, 'minimun password length is 6 characters']
-        }
+    status: String,
+    grade: String,
+    classe: [{ type: mongoose.Schema.Types.ObjectId, ref: 'class', default: null }],
+    email: {
+        type: String,
+        required: [true, 'Please enter an email'],
+        unique: true,
+        lowercase: true,
+        validate: [(val) => { return isEmail(val) }, 'Please enter a valid email']
+    },
+    password: {
+        type: String,
+        minlength: [6, 'minimun password length is 6 characters']
+    }
     // références aux cours assurés
     // emploiDuTemps: [ObjectId] // référence à la collection EmploiDuTemps
-  })
+})
 
 TeacherSchema.pre('save', async function (next) { //not an arrowfunction! 
     console.log("new user is about to be saved")
@@ -37,11 +37,13 @@ TeacherSchema.post('save', function (doc, next) {
     next()
 })
 
+
+
 TeacherSchema.statics.login = async function (email, password) {
     let user = await this.findOne({ email })
     if (user) {
         const auth = await bcrypt.compare(password, user.password)
-        if (auth) {  
+        if (auth) {
             return user
 
         }
@@ -50,5 +52,5 @@ TeacherSchema.statics.login = async function (email, password) {
     throw Error('incorrect email')
 }
 
-const TeacherModel = mongoose.model('teacher',TeacherSchema) 
+const TeacherModel = mongoose.model('teacher', TeacherSchema)
 module.exports = TeacherModel
