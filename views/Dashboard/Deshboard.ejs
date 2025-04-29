@@ -145,21 +145,21 @@
 					<li>
 						<i class='bx bxs-calendar-check'></i>
 						<span class="text">
-							<h3>180</h3>
+							<h3><%=studentsNumber%></h3>
 							<p>Students</p>
 						</span>
 					</li>
 					<li>
 						<i class='bx bxs-group'></i>
 						<span class="text">
-							<h3>15</h3>
+							<h3><%=teachersNumber%></h3>
 							<p>Teachers</p>
 						</span>
 					</li>
 					<li>
 						<i class='bx bxs-dollar-circle'></i>
 						<span class="text">
-							<h3>16</h3>
+							<h3><%=classesNumber%></h3>
 							<p>Room</p>
 						</span>
 					</li>
@@ -284,6 +284,7 @@
 						<tr>
 							<th>Nom & Prénom</th>
 							<th>Email</th>
+							<th>password</th>
 							<th>Telephone</th>
 							<th>Statut</th>
 							<th>Grade</th>
@@ -525,7 +526,6 @@
 								<select id="semester" required>
 									<option value="S1">Semestre 1</option>
 									<option value="S2">Semestre 2</option>
-									<option value="S2">Semestre 3</option>
 								</select>
 							</label>
 
@@ -595,7 +595,6 @@
 						<option value="">Sélectionner un semestre</option>
 						<option value="1">Semestre 1</option>
 						<option value="2">Semestre 2</option>
-						<option value="3">semestre 3</option>
 					</select>
 					<button id="loadScheduleBtn">Charger Emploi du temps</button>
 				</div>

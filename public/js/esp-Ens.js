@@ -1,5 +1,43 @@
 const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
 
+function getsectionReload() {
+	// Get the saved section from localStorage
+	const activeSection = localStorage.getItem('activeSection');
+	const activeMenu = localStorage.getItem('activeSideMenu')
+  
+	if (activeSection) {
+	  // Hide all sections
+	  contentSections.forEach(section => {
+		section.classList.remove('show');
+	  });
+  
+	  // Show the saved section
+	  const targetSection = document.getElementById(activeSection);
+	  if (targetSection) {
+		targetSection.classList.add('show');
+	  }
+  
+	}
+  
+	if (activeMenu) {
+	  const savedItem = document.querySelector(`[data-target="${activeMenu}"]`);
+	  if (savedItem) {
+		allSideMenu.forEach(i => {
+		  i.parentElement.classList.remove('active');
+		});
+		savedItem.parentElement.classList.add('active');
+		savedItem.click(); // triggers fetch and shows the section
+	  }
+	}
+  
+  }
+  
+  
+  document.addEventListener('DOMContentLoaded', getsectionReload)
+
+
+
+
 allSideMenu.forEach(item=> {
 	const li = item.parentElement;
 
@@ -8,6 +46,8 @@ allSideMenu.forEach(item=> {
 			i.parentElement.classList.remove('active');
 		})
 		li.classList.add('active');
+		const target = item.getAttribute('data-target');
+		localStorage.setItem("activeSideMenu", target);
 	})
 });
 
@@ -489,7 +529,7 @@ function enregistrerNotes() {
 	const notes = [];
   
 	lignes.forEach(ligne => {
-	  const nomEtudiant = ligne.cells[0].textContent.trim();
+	  const nomEtudiant = ligne.cells[0].textContent.trim(); // daya-id attribute
 	  const cc = parseFloat(ligne.cells[1].querySelector("input").value) || 0;
 	  const examen = parseFloat(ligne.cells[2].querySelector("input").value) || 0;
 	  const moyenne = parseFloat(ligne.cells[3].textContent) || 0;
@@ -574,7 +614,7 @@ document.addEventListener('click', function (e) {
 	const logoutBtn = e.target.closest('.logout');
 	if (logoutBtn) {
 	  e.preventDefault();
-  
+		
 	  // Optionnel : confirmation
 	  if (confirm("Voulez-vous vraiment vous déconnecter ?")) {
 		

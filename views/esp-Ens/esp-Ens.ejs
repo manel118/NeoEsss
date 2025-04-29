@@ -70,7 +70,7 @@
 			</li>
 			-->
 			<li>
-				<a href="/logout" class="logout">
+				<a href="#" class="logout">
 					<i class='bx bxs-log-out-circle' ></i>
 					<span class="text">Logout</span>
 				</a>
@@ -94,6 +94,7 @@
 				</div>
 			</form>
 			<input type="checkbox" id="switch-mode" hidden>
+
 			<label for="switch-mode" class="switch-mode"></label>
 			<a href="#" class="notification">
 				<i class='bx bxs-bell' ></i>
@@ -132,15 +133,15 @@
 				<div class="teacher-info-card">
 					<img src="/images/people.png.jpg" alt="Teacher Photo" class="teacher-photo">
 					<div class="teacher-details">
-						<h2>Mr. Benameur Samir</h2>
+						<h2><%=teacher.nom%> <%=teacher.prenom%></h2>
 						<p><strong>Spécialité :</strong> Réseaux et Télécom</p>
-						<p><strong>Grade</strong> professeur</p>
+						<p><strong>Grade</strong> <%=teacher.grade%></p>
 					</div>
 				</div>
 			
 				<div class="teacher-metrics">
 					<div class="metric-card">
-						<h3>4</h3>
+						<h3><%=teacher.classe.length%></h3>
 						<p>Classe Enseignés</p>
 					</div>
 					<div class="metric-card">

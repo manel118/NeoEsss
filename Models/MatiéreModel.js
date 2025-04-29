@@ -2,6 +2,8 @@ const mongoose = require("mongoose")
 const MatierSchema = new mongoose.Schema({
     nom: String,
     coeff: Number,
+    crédit : Number ,
+    
 })
 const MatierModel = mongoose.model('matiere', MatierSchema)
 module.exports =  MatierModel

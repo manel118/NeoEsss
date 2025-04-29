@@ -7,7 +7,6 @@ const StudentSchema = new mongoose.Schema({
     matricule: String,
     telephone: String,
     dateInscription: Date,
-    email: String,
     classe: { type: mongoose.Schema.Types.ObjectId, ref: 'class' }, // référence à la collection Spécialité
     email: {
         type: String,

@@ -534,6 +534,7 @@ body {
 	#content {
 		width: calc(100% - 60px);
 		left: 200px;
+	
 	}
 
 	#content nav .nav-link {
@@ -570,12 +571,22 @@ body {
 		color: var(--light);
 		background: var(--red);
 	}
-
+     
 	#content nav form.show ~ .notification,
 	#content nav form.show ~ .profile {
 		display: none;
+	
 	}
-
+.profileName {
+	display: inline-block;
+	padding: 8px 12px;
+	background-color: #f0f0f0;
+	color: #333;
+	font-weight: 600;
+	border-radius: 8px;
+	font-size: 16px;
+	letter-spacing: 0.5px;
+}
 	#content main .box-info {
 		grid-template-columns: 1fr;
 	}

@@ -5,12 +5,14 @@ const ModuleSchema = new mongoose.Schema({
     classe: { type: mongoose.Schema.Types.ObjectId, ref: 'class' }, // lien vers la spécialité
     teacher: { type: mongoose.Schema.Types.ObjectId, ref: 'teacher' },// responsable du cours
     anné_univ  : {
-        type : String , 
-        default : new Date()
-    },
+        type : Date , 
+        default: () => {
+            const year = new Date().getFullYear();
+            return `${year}-${year + 1}`; 
+          }},
     cours: [{
         nom: String,
-        pathDoc: String
+        docPath: String
     }]
 })
 

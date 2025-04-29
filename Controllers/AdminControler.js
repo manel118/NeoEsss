@@ -59,7 +59,10 @@ module.exports.Dashbord_get = async (req, res) => {
     if (req.user) {
         const matieres = await MatierModel.find().sort({ nom: 1 })
         const teachers = await teacher.find()
-        res.render("Deshboard", { matieres, teachers })
+        const studentsNumber = await student.countDocuments()
+        const teachersNumber = await teacher.countDocuments()
+        const classesNumber = await classModel.countDocuments()
+        res.render("Deshboard", { matieres, teachers ,studentsNumber ,teachersNumber, classesNumber})
         console.log(`you are in the admin dashbord , adminID : ${req.user.id}`);
     } else { res.redirect("/admin/login") }
 }
@@ -118,6 +121,8 @@ module.exports.get_users = async function (req, res) {
             users = await model.find()
         }
         console.log(users)
+
+        // recupere les password son hashage (etudiant / teahcer)
 
         res.json({users}); // Send data as JSON response
     } catch (err) {
@@ -198,7 +203,9 @@ module.exports.add_module = async function (req, res) {
 // get moduleEnseignier
 module.exports.get_modules = async function (req, res) {
     const data = await ModuleModel.find().populate("classe").populate("teacher").populate("matiere")
-    try {
+
+
+            try {
         res.json({data})
         // console.log(data)
 

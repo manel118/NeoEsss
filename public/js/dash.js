@@ -38,14 +38,7 @@ document.addEventListener('DOMContentLoaded', getsectionReload)
 
 document.addEventListener('click', (event) => {
   const target = event.target;
-  // // Edit Teacher
-  // if (target.classList.contains('edit-btn')) {
-  //   const teacherId = target.getAttribute('data-id');
-  //   console.log(`Edit teacher with ID: ${teacherId}`);
-  //   // You can add functionality to edit the teacher here (e.g., show a form with pre-filled data)
-  // }
-
-  // Delete Teacher // student
+  // Delete Teacher // student // everything
   if (target.classList.contains('delete-btn')) {
     const teacherId = target.getAttribute('data-id');
     console.log(`Delete teacher with ID: ${teacherId}`);
@@ -284,16 +277,19 @@ if(result.users){
       row.innerHTML = `
         <td>${teacher.nom} ${teacher.prenom}</td>
         <td>${teacher.email}</td>
+        <td>${teacher.password}</td>
         <td>${teacher.telephone}</td>
         <td>${teacher.status}</td>
         <td>${teacher.grade}</td>
         <td>
-          <button class="edit-btn" data-id="${teacher._id}">modifier</button>
+          <button class="edit-btn" data-id="${teacher._id}">✏️modifier</button>
           <button class="delete-btn" data-id="${teacher._id}">supprime</button>
         </td>
       `;
 
       tableBody.appendChild(row);
+      attacherEventsAuxBoutons()
+
     });}
     else if(result.err){
     console.error(err.message , err);
@@ -310,9 +306,11 @@ if(result.users){
 
 // fonction pour attacher les événements :
 function attacherEventsAuxBoutons() {
-  // btn modification
+
+  // btn modificatio
   document.querySelectorAll('.edit-btn').forEach(btn => {
     btn.addEventListener('click', function () {
+      console.log("modification")
       const row = this.closest('tr');
       const fullName = row.cells[0].textContent.split(' ');
       const email = row.cells[1].textContent;
@@ -329,6 +327,10 @@ function attacherEventsAuxBoutons() {
       document.getElementById('phone').value = ''; // à adapter si tu veux stocker le téléphone
       document.getElementById('grade').value = grade;
       document.getElementById('status').value = status;
+  // selon le tableau 
+
+
+
 
       // Sélection des matières
       //const options = document.getElementById('subjects').options;
@@ -494,6 +496,7 @@ async function fetchStudents() {
 
         tableBody.appendChild(row);
       });
+      attacherEventsAuxBoutons()
     }
   } catch (err) {
     console.error('front part Error fetching students:', err);
@@ -577,7 +580,7 @@ async function fetchModules() {
         <td>${module.matiere.nom} </td>
         <td>${module.classe.niveau} ${module.classe.spécialité}</td>
         <td>${module.semestre}</td>
-        <td>${module.teacher.nom} ${module.teacher.prenom}</td>
+        <td>${module.teacher?.nom ||  "supprime"}  ${module.teacher?.prenom || "supprime"}</td>
         <td>
           <button class="edit-btn" data-id="${module._id}">modifier</button>
           <button class="delete-btn" data-id="${module._id}">supprimer</button>
@@ -970,20 +973,16 @@ function supprimerAnnonce(id) {
 // Logout ====================================
 
 // Sélectionner le bouton de logout dans le sidebar
-document.querySelector(".logout").addEventListener("click", (e) => {
+document.querySelector(".logout").addEventListener("click", async(e) => {
   e.preventDefault(); // empêcher le comportement par défaut du lien
 
   if (confirm("Voulez-vous vraiment vous déconnecter ?")) {
     // Supprimer les données de session (ou utilisateur connecté)
-    localStorage.removeItem("currentUser"); // ou adapte selon ta logique
-    sessionStorage.clear(); // si tu utilises sessionStorage
+    await fetch("/admin/logout")
 
-    // Message de confirmation
-    alert("Vous avez été déconnecté.");
-
-    // Rediriger vers une page de connexion (si elle existe)
-    window.location.href = "../Login-admin/login.html";
-
+    window.location.href = "../admin/login";
+ alert("Vous avez été déconnecté.");
+ localStorage.clear()
     // Ou recharger la page pour revenir à l'état initial
     //location.reload();
 

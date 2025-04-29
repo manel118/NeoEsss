@@ -7,14 +7,40 @@
 const Teacher = require("../Models/TeacherModel")
 
 module.exports.get_login = async (req,res)=>{
-    res.send("you are in the teacher login page")
+  console.log(req.cookies)
+
+  if (req.user)
+      res.redirect("/teacher/dashboard") // render
+  else
+      res.render("index") // render
    }
    
 
 module.exports.Dashbord_get = async (req,res)=>{
-    const teacher = await Teacher.findById(req.user.id)
-    res.render("esp-Ens")
+  if(req.user){
+    const teacher = await Teacher.findById(req.user.id).populate()
+    console.log(teacher)
+    // const Numcour = getNumCour(teacher._id)
+    
+    res.render("esp-Ens",{teacher })
   console.log(` teacher : ${teacher}`);
+}else{
+   res.redirect("/login") 
+}
+
+}
+async function getNumCour(id){
+//  const toutmodule =  await module.find({teacher : id}) // every module he teaches
+}
+
+module.exports.get_classes = async (req,res)=>{
 
 }
 
+//logout
+module.exports.logout_get = (req, res) => {
+  res.cookie('jwt', '', {
+      maxAge: 1
+  })
+  res.redirect('/login')
+}
