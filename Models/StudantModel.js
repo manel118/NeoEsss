@@ -6,7 +6,14 @@ const StudentSchema = new mongoose.Schema({
     prenom: String,
     matricule: String,
     telephone: String,
-    dateInscription: Date,
+    sexe: { type: String, enum: ['male', 'female'] },
+    dateNaissance: Date,
+    lieuNaissance: String,
+    wilayaNaissance: String,
+    situation: { type: String, enum: ['étranger', 'externe', 'agent'] },
+    wilayaResidence: String,
+    adresse: String,
+    academicYear: { type: mongoose.Schema.Types.ObjectId, ref: 'AcademicYear' },
     classe: { type: mongoose.Schema.Types.ObjectId, ref: 'class' }, // référence à la collection Spécialité
     email: {
         type: String,
@@ -25,7 +32,7 @@ const StudentSchema = new mongoose.Schema({
     //   note: Number
     // }],
     // demandes: [type: mongoose.Schema.Types.ObjectId, ref: 'Class' ], // ex : certificat de scolarité, recours, etc.
-})
+},{ timestamps: true })
 
 StudentSchema.pre('save', async function (next) { //not an arrowfunction! 
     console.log("new user is about to be saved")

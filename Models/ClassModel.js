@@ -3,11 +3,11 @@ const mongoose = require("mongoose");
 
 
 const classSchema = new mongoose.Schema({
-  spécialité: String,
-  niveau: String,
+  spécialité: {type : String  , required : true} ,
+  niveau: {type : String  , required : true} ,
   students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'student', default: null }],
-  salle: String
-});
+  academicYear: { type: mongoose.Schema.Types.ObjectId, ref: 'AcademicYear' , required : true}, ///make sure add it when insurting
+},{ timestamps: true });
 
 classSchema.set('toObject', { virtuals: true });
 classSchema.set('toJSON', { virtuals: true });

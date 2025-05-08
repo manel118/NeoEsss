@@ -14,6 +14,7 @@ const jwt = require("jsonwebtoken")
 const MatierModel = require("../Models/MatiéreModel")
 const { json } = require("express")
 const ModuleModel = require("../Models/ModuleModel")
+const academicYear = require("../Models/academicYear")
 
 
 // create token
@@ -57,12 +58,12 @@ module.exports.login_post = async (req, res) => {
 module.exports.Dashbord_get = async (req, res) => {
     console.log("you are in dashboard")
     if (req.user) {
-        const matieres = await MatierModel.find().sort({ nom: 1 })
+        const classes = await classModel.find()
         const teachers = await teacher.find()
         const studentsNumber = await student.countDocuments()
         const teachersNumber = await teacher.countDocuments()
         const classesNumber = await classModel.countDocuments()
-        res.render("Deshboard", { matieres, teachers ,studentsNumber ,teachersNumber, classesNumber})
+        res.render("Deshboard", { classes, teachers ,studentsNumber ,teachersNumber, classesNumber})
         console.log(`you are in the admin dashbord , adminID : ${req.user.id}`);
     } else { res.redirect("/admin/login") }
 }
@@ -178,14 +179,16 @@ module.exports.add_matiere = async function (req, res) {
 module.exports.add_module = async function (req, res) {
     // this is one to work on
     let data = req.body.module
-    const spe = data.classe.split(' ')[1]
-    const niv = data.classe.split(' ')[0]
+    const spe = data.classe.split(' ')[0]
+    const niv = data.classe.split(' ')[1]
     const classid = await classModel.findOne({
         spécialité: spe,
         niveau: niv
     })
+    const currentYear = await academicYear.findOne({ isCurrent: true });
     data = classid ? { ...data, classe: classid._id } : data
-    console.log(classid)
+    data = currentYear ? { ...data, academicYear: currentYear} : data
+    console.log(classid , currentYear)
 
     //  affect to a teacher
     await teacher.updateOne({ _id: data.teacher }, { $addToSet: { classe: data.classe } })
@@ -194,6 +197,9 @@ module.exports.add_module = async function (req, res) {
         res.json({module})
         console.log(module)
     }).catch(err => {
+        if (err.code === 11000) 
+            res.status(400).json({ err: "Attention! tu est entrain de dupliquer les affectation pour les méme matiere et class." });
+        else
         res.json({err})
         console.log(err)
     })
@@ -216,6 +222,18 @@ module.exports.get_modules = async function (req, res) {
     }
 
 }
+
+
+// Express route
+module.exports.getMatrireByclass = async function (req, res) {
+    try {
+      const matieres = await MatierModel.find({ classe: req.params.classeId });
+      res.json(matieres);
+    } catch (err) {
+      res.status(500).json({ error: 'Erreur serveur' });
+    }
+  }
+
 function getModel(role) {
     if (role == "student") {
         return student

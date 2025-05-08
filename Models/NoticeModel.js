@@ -6,7 +6,7 @@ const NoticeSchema = new mongoose.Schema({
   titre : String,
   message: String,
   date: Date,
-  distinataire : String // ou niveau
+  distinataire : String ,// ou niveau
 })
 
 const NoticeModel = mongoose.model('schedule', NoticeSchema)

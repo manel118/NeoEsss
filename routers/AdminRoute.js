@@ -16,6 +16,7 @@ router.get("/fix_classes",AdminControler.fix_classes)
 //module section functions
 router.post("/add_module",AdminControler.add_module)
 router.get("/get_modules",AdminControler.get_modules)
+router.get("/getMatiereByClass/:classeId",AdminControler.getMatrireByclass)
 
 //login
 

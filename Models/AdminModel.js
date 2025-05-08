@@ -5,20 +5,10 @@ const bcrypt = require("bcrypt")
 
 const AdminSchema = new mongoose.Schema({
   username: String,
-  // cours: [{ type: mongoose.Schema.Types.ObjectId, ref: 'module' }],
-  email: {
-    type: String,
-    required: [true, 'Please enter an email'],
-    unique: true,
-    lowercase: true,
-    validate: [(val) => { return isEmail(val) }, 'Please enter a valid email']
-  },
   password: {
     type: String,
     minlength: [6, 'minimun password length is 6 characters']
   }
-  // références aux cours assurés
-  // emploiDuTemps: [ObjectId] // référence à la collection EmploiDuTemps
 })
 
 AdminSchema.pre('save', async function (next) { //not an arrowfunction! 

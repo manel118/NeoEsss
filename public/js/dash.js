@@ -36,26 +36,26 @@ function getsectionReload() {
 
 document.addEventListener('DOMContentLoaded', getsectionReload)
 
-document.addEventListener('click', (event) => {
-  const target = event.target;
-  // Delete Teacher // student // everything
-  if (target.classList.contains('delete-btn')) {
-    const teacherId = target.getAttribute('data-id');
-    console.log(`Delete teacher with ID: ${teacherId}`);
+// document.addEventListener('click', (event) => {
+//   const target = event.target;
+//   // Delete Teacher // student // everything
+//   if (target.classList.contains('delete-btn')) {
+//     const teacherId = target.getAttribute('data-id');
+//     console.log(`Delete teacher with ID: ${teacherId}`);
 
-    // Send DELETE request to remove teacher
-    fetch(`/admin/delete-teacher/${teacherId}`, {
-      method: 'DELETE'
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data.message)
-        // Refresh the table after deletion
-        fetchTeachers();
+//     // Send DELETE request to remove teacher
+//     fetch(`/admin/delete-teacher/${teacherId}`, {
+//       method: 'DELETE'
+//     })
+//       .then((res) => res.json())
+//       .then((data) => {
+//         console.log(data.message)
+//         // Refresh the table after deletion
+//         fetchTeachers();
 
-      }).catch((err) => console.error('Error deleting teacher:', err));
-  }
-});
+//       }).catch((err) => console.error('Error deleting teacher:', err));
+//   }
+// });
 
 
 
@@ -266,33 +266,34 @@ async function fetchTeachers() {
     })
 
     const result = await res.json();
-if(result.users){
-    const tableBody = document.querySelector('#teacherTable tbody');
-    tableBody.innerHTML = ''; // Clear any existing rows
+    if (result.users) {
+      const tableBody = document.querySelector('#teacherTable tbody');
+      tableBody.innerHTML = ''; // Clear any existing rows
 
-    result.users.forEach(teacher => {
-      const row = document.createElement('tr');
+      result.users.forEach(teacher => {
+        const row = document.createElement('tr');
 
-      // Create table data for each teacher
-      row.innerHTML = `
+        // Create table data for each teacher
+        row.innerHTML = `
         <td>${teacher.nom} ${teacher.prenom}</td>
         <td>${teacher.email}</td>
-        <td>${teacher.password}</td>
         <td>${teacher.telephone}</td>
         <td>${teacher.status}</td>
+        
         <td>${teacher.grade}</td>
         <td>
           <button class="edit-btn" data-id="${teacher._id}">✏️modifier</button>
-          <button class="delete-btn" data-id="${teacher._id}">supprime</button>
+          <button class="delete-btn" data-id="${teacher._id}">detaille</button>
         </td>
       `;
 
-      tableBody.appendChild(row);
-      attacherEventsAuxBoutons()
+        tableBody.appendChild(row);
+        attacherEventsAuxBoutons()
 
-    });}
-    else if(result.err){
-    console.error(err.message , err);
+      });
+    }
+    else if (result.err) {
+      console.error(err.message, err);
 
     }
   } catch (err) {
@@ -327,7 +328,7 @@ function attacherEventsAuxBoutons() {
       document.getElementById('phone').value = ''; // à adapter si tu veux stocker le téléphone
       document.getElementById('grade').value = grade;
       document.getElementById('status').value = status;
-  // selon le tableau 
+      // selon le tableau 
 
 
 
@@ -441,19 +442,30 @@ studentSearchInput.addEventListener('input', function () {
 const classFilter = document.getElementById('classFilter');
 
 classFilter.addEventListener('change', function () {
-  const selectedClass = this.value.toLowerCase();
+  const selectedValue = this.value.trim()
   const rows = studentTable.getElementsByTagName('tr');
 
   Array.from(rows).forEach(row => {
-    const rowClass = row.cells[5].textContent.toLowerCase();
+    const niveauCell = row.querySelector("td:nth-child(6)");
+    const specialiteCell = row.querySelector("td:nth-child(7)");
 
-    if (selectedClass === '' || rowClass === selectedClass) {
-      row.style.display = '';
+    if (!niveauCell || !specialiteCell) return;
+
+    const niveau = niveauCell.textContent.trim();
+    const specialite = specialiteCell.textContent.trim();
+    const combined = `${niveau} ${specialite}`; // Match format: "Master2 SI"
+
+    if (selectedValue === "" || combined === selectedValue) {
+      row.style.display = "";
     } else {
-      row.style.display = 'none';
+      row.style.display = "none";
     }
   });
 });
+
+
+
+
 
 //fetching students 
 async function fetchStudents() {
@@ -471,7 +483,7 @@ async function fetchStudents() {
     if (result.err) {
       console.error(result.message, result.err);
     }
-    else if(result.users){
+    else if (result.users) {
 
       const tableBody = document.querySelector('#studentTable tbody');
       tableBody.innerHTML = ''; // Clear any existing rows
@@ -482,15 +494,23 @@ async function fetchStudents() {
 
         // Create table data for each teacher
         row.innerHTML = `
+        <td>${student.matricule}</td>
         <td>${student.nom} ${student.prenom}</td>
         <td>${student.email}</td>
         <td>${student.telephone}</td>
-        <td>${student.matricule}</td>
+        <td>${student.sexe}</td>  
         <td>${student.classe?.niveau || ' '}</td>
         <td>${student.classe?.spécialité || ' '}</td>
+        <td>${new Date(student.dateNaissance).toLocaleDateString()}</td>
+        <td>${student.lieuNaissance}</td>
+        <td>${student.wilayaNaissance}</td>
+        <td>${student.situation}</td>
+        <td>${student.wilayaResidence}</td>
+        <td>${student.adresse}</td>
+     
         <td>
           <button class="edit-btn" data-id="${student._id}">modifier</button>
-          <button class="delete-btn" data-id="${student._id}">supprimer</button>
+          <button class="delete-btn" data-id="${student._id}">detaille</button>
         </td>
       `;
 
@@ -548,11 +568,37 @@ moduleForm.addEventListener('submit', async function (e) {
     }
 
   } catch (err) {
+    alert(err)
 
   }
   moduleForm.reset();
   moduleModal.classList.remove('show');
 });
+
+//  get matiere of a specific class
+document.getElementById('classList').addEventListener('change', function () {
+  const classeId = this.value;
+  const moduleSelect = document.getElementById('moduleName');
+
+  moduleSelect.innerHTML = '<option value="">Chargement...</option>';
+
+  fetch(`/admin/getMatiereByClass/${classeId}`)
+    .then(response => response.json())
+    .then(matieres => {
+      moduleSelect.innerHTML = '<option value="">🎯 Sélectionner une matière</option>';
+      matieres.forEach(mat => {
+        const option = document.createElement('option');
+        option.value = mat._id;
+        option.textContent = mat.nom;
+        moduleSelect.appendChild(option);
+      });
+    })
+    .catch(err => {
+      moduleSelect.innerHTML = '<option value="">Erreur lors du chargement</option>';
+      console.log(err)
+    });
+});
+
 
 // fetching modules 
 async function fetchModules() {
@@ -580,7 +626,7 @@ async function fetchModules() {
         <td>${module.matiere.nom} </td>
         <td>${module.classe.niveau} ${module.classe.spécialité}</td>
         <td>${module.semestre}</td>
-        <td>${module.teacher?.nom ||  "supprime"}  ${module.teacher?.prenom || "supprime"}</td>
+        <td>${module.teacher?.nom || "supprime"}  ${module.teacher?.prenom || "supprime"}</td>
         <td>
           <button class="edit-btn" data-id="${module._id}">modifier</button>
           <button class="delete-btn" data-id="${module._id}">supprimer</button>
@@ -973,7 +1019,7 @@ function supprimerAnnonce(id) {
 // Logout ====================================
 
 // Sélectionner le bouton de logout dans le sidebar
-document.querySelector(".logout").addEventListener("click", async(e) => {
+document.querySelector(".logout").addEventListener("click", async (e) => {
   e.preventDefault(); // empêcher le comportement par défaut du lien
 
   if (confirm("Voulez-vous vraiment vous déconnecter ?")) {
@@ -981,8 +1027,8 @@ document.querySelector(".logout").addEventListener("click", async(e) => {
     await fetch("/admin/logout")
 
     window.location.href = "../admin/login";
- alert("Vous avez été déconnecté.");
- localStorage.clear()
+    alert("Vous avez été déconnecté.");
+    localStorage.clear()
     // Ou recharger la page pour revenir à l'état initial
     //location.reload();
 

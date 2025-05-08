@@ -1,13 +1,16 @@
 const mongoose = require("mongoose")
 const { isEmail } = require("validator")
 const bcrypt = require("bcrypt")
+const ModuleModel = require("./ModuleModel")
 const TeacherSchema = new mongoose.Schema({
     nom: String,
     prenom: String,
     telephone: String,
-    status: String,
+    status: {type: String , 
+        default : "actif"
+    },
     grade: String,
-    classe: [{ type: mongoose.Schema.Types.ObjectId, ref: 'class', default: null }],
+    classe: [{ type: mongoose.Schema.Types.ObjectId, ref: 'class', default: null }], //think of getting rid of this line 
     email: {
         type: String,
         required: [true, 'Please enter an email'],
@@ -18,10 +21,10 @@ const TeacherSchema = new mongoose.Schema({
     password: {
         type: String,
         minlength: [6, 'minimun password length is 6 characters']
-    }
+    },
     // références aux cours assurés
     // emploiDuTemps: [ObjectId] // référence à la collection EmploiDuTemps
-})
+},{ timestamps: true })
 
 TeacherSchema.pre('save', async function (next) { //not an arrowfunction! 
     console.log("new user is about to be saved")
@@ -36,6 +39,16 @@ TeacherSchema.post('save', function (doc, next) {
     console.log("new user was created and saved", doc)
     next()
 })
+
+
+TeacherSchema.pre('findOneAndDelete', async function(next) {
+    const teacher = await this.model.findOne(this.getFilter());
+    if (teacher) {
+      await ModuleModel.deleteMany({ teacher: teacher._id });
+    }
+    next();
+  });
+  
 
 
 

@@ -284,11 +284,13 @@
 						<tr>
 							<th>Nom & Prénom</th>
 							<th>Email</th>
-							<th>password</th>
 							<th>Telephone</th>
 							<th>Statut</th>
 							<th>Grade</th>
 							<th>Actions</th>
+							<th>nombre classes</th>
+							<th>nombre modules</th>
+							<th>status horaire</th>     
 						</tr>
 					</thead>
 					<tbody>
@@ -342,8 +344,10 @@
 								Grade :
 								<select id="grade" required>
 									<option value="professor">Professeur</option>
-									<option value="assistant_professor">Maître de conférences</option>
-									<option value="lecturer">Lecteur</option>
+									<option value="assistant_professor">Maître de conférences A</option>
+									<option value="lecturer">Maître de conférences B</option>
+									<option value="lecturer">Maître assistant A</option>
+									<option value="lecturer">Maître assistant B</option>
 								</select>
 							</label>
 
@@ -391,13 +395,20 @@
 				<table class="styled-table" id="studentTable">
 					<thead>
 						<tr>
+							<th>Numéro d’inscription</th>
 							<th>Nom & Prénom</th>
 							<th>Email</th>
 							<th>Téléphone</th>
-							<th>Numéro d’inscription</th>
+							<th>Sexe</th>
 							<th>Niveau</th>
-							<th>sspécialité</th>
-							<th>Actions</th>
+							<th>Spécialité</th>
+							<th>Date de naissance</th>
+							<th>Lieu de naissance</th>
+							<th>Wilaya de naissance</th>
+							<th>Situation</th>
+							<th>Wilaya de résidence</th>
+							<th>Adresse</th>
+							<th>Action</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -461,7 +472,7 @@
 			<!-- Modules Section-->
 			<div id="modules" class="content-section">
 				<section>
-					<h2> 📚Gestion des modules</h2>
+					<h2> 📚Affectation des module</h2>
 					<button id="addModuleBtn">➕ Ajouter un module</button>
 					<input type="text" id="searchModuleInput" placeholder="🔍 Rechercher par nom ou classe...">
 
@@ -496,17 +507,7 @@
 								Coefficient
 								<input type="number" id="coefficient" min="1" required>
 							</label> -->
-							<label for="module"> Module concerné
-								<select id="moduleName" required>
-									
-
-									<% matieres.forEach(mat=> { %>
-										<option value="<%= mat._id %>">
-											<%= mat.nom %>
-										</option>
-										<% }) %>
-								</select>
-							</label>
+							
 
 							<label for="modEnseignant">
 								Enseignant
@@ -532,18 +533,20 @@
 							<label for="classe">
 								Classe(s)
 								<select id="classList" required>
-									<option value="">📚 Selectionner une classe</option>
-									<option value="">📚 Selectionner une classe</option>
-									<option value="">📚 Selectionner une classe</option>
-									<option value="Master1 SI">M1 Systeme d'information</option>
-									<option value="Master2 SI">M2 Systeme d'information</option>
-									<option value="Master1 droit">M1 Droit</option>
-									<option value="Master2 droit">M2 Droit</option>
-									<option value="Master1 Mng">M1 Management</option>
-									<option value="Master2 Mng">M2 Management</option>
-									<option value="Master1 Act">M1 Actuariat</option>
-									<option value="Master2 Act">M2 Actuariat</option>
-								</select>
+									<option value="">📚 Sélectionner une classe</option>
+									<% classes.forEach(cl => { %>
+									  <option value="<%= cl.spécialité %> <%= cl.niveau %>" id="<%= cl._id%>"><%= cl.niveau %> <%= cl.spécialité %></option>
+									<% }) %>
+								  </select>
+
+									</label>
+<!-- Backend route to fetch matieres by class: // Adjust your frontend HTML + JS: -->
+								<label for="module"> Module concerné
+									<select id="moduleName" required>
+										<option value="">🎯 Sélectionner une matière</option>
+									</select>
+									
+								</label>
 								<!--
 									<div class="checkbox-list" id="classList">
 										<label><input type="checkbox" value="1ère année"> 1ère année</label>
@@ -553,7 +556,7 @@
 									</div>
 									-->
 
-							</label>
+						
 
 							<button type="submit">Enregistrer</button>
 						</form>

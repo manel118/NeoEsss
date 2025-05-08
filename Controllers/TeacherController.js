@@ -19,10 +19,8 @@ module.exports.get_login = async (req,res)=>{
 module.exports.Dashbord_get = async (req,res)=>{
   if(req.user){
     const teacher = await Teacher.findById(req.user.id).populate()
-    console.log(teacher)
     // const Numcour = getNumCour(teacher._id)
-    
-    res.render("esp-Ens",{teacher })
+    res.render("esp-Ens",{teacher})
   console.log(` teacher : ${teacher}`);
 }else{
    res.redirect("/login") 
