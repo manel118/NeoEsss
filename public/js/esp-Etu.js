@@ -107,7 +107,7 @@ const progressChart = new Chart(ctx, {
 
 // Utilitaire pour afficher une seule section et cacher les autres
 function showSection(sectionIdToShow) {
-	const allSections = ["dashboard-section", "my-courses", "my-grades", "schedule", "requests", "notification"];
+	const allSections = ["dashboard-section", "my-courses", "my-grades", "schedule","exams", "requests", "notification"];
 	allSections.forEach(id => {
 		const section = document.getElementById(id);
 		if (section) {
@@ -135,6 +135,12 @@ document.getElementById("btn-my-grades").addEventListener("click", function(e) {
 document.getElementById("btn-schedule").addEventListener("click", function(e) {
 	e.preventDefault();
 	showSection("schedule");
+});
+
+
+document.getElementById("btn-exams").addEventListener("click", function(e) {
+	e.preventDefault();
+	showSection("exams");
 });
 
 document.getElementById("btn-requests").addEventListener("click", function(e) {
@@ -249,6 +255,77 @@ document.getElementById("btn-my-courses").addEventListener("click", (e) => {
 });
 
 
+// My grades
+
+function calculerResultatsSemestre(tableId) {
+  const table = document.getElementById(tableId);
+  if (!table) return;
+
+  const rows = table.querySelectorAll('tbody tr');
+  let totalMoyenneCoef = 0;
+  let totalCoef = 0;
+  let totalCreditsObtenus = 0;
+  let tousLesCreditsObtenus = true;
+
+  rows.forEach(row => {
+    const cells = row.querySelectorAll('td');
+    if (cells.length < 7) return; // ignore les lignes trop courtes
+
+    // S'il y a 8 cellules, c'est une ligne avec UE
+    const offset = (cells.length === 8) ? 0 : -1;
+
+    const coefIndex = 2 + offset;
+    const creditIndex = 3 + offset;
+    const ccIndex = 4 + offset;
+    const examIndex = 5 + offset;
+    const moyenneIndex = 6 + offset;
+    const creditObtenuIndex = 7 + offset;
+
+    const coef = parseFloat(cells[coefIndex]?.textContent) || 0;
+    const credit = parseFloat(cells[creditIndex]?.textContent) || 0;
+    const noteCC = parseFloat(cells[ccIndex]?.textContent) || 0;
+    const noteExam = parseFloat(cells[examIndex]?.textContent) || 0;
+
+    const moyenne = ((noteExam * 2) + noteCC) / 3;
+    const moyenneFixe = moyenne.toFixed(2);
+    const creditObtenu = moyenne >= 10 ? credit : 0;
+
+    if (cells[moyenneIndex]) cells[moyenneIndex].textContent = moyenneFixe;
+    if (cells[creditObtenuIndex]) cells[creditObtenuIndex].textContent = creditObtenu;
+
+    totalMoyenneCoef += moyenne * coef;
+    totalCoef += coef;
+    totalCreditsObtenus += creditObtenu;
+
+    if (creditObtenu < credit) {
+      tousLesCreditsObtenus = false;
+    }
+  });
+
+  // Résumé en bas
+  const moyenneSemestre = totalCoef > 0 ? (totalMoyenneCoef / totalCoef).toFixed(2) : '--';
+  const decision =
+    moyenneSemestre >= 10 && tousLesCreditsObtenus ? 'Admis' :
+    moyenneSemestre >= 9 ? 'Rachat' : 'Ajourné';
+
+  const containerElem = table.closest('.grades-container')?.nextElementSibling;
+  if (containerElem) {
+    containerElem.innerHTML = `
+      <p><strong>Moyenne du Semestre :</strong> <span class="semester-average">${moyenneSemestre}</span></p>
+      <p><strong>Total Crédits Obtenus :</strong> <span class="semester-credits">${totalCreditsObtenus}</span></p>
+      <p><strong>Décision :</strong> <span class="semester-decision">${decision}</span></p>
+    `;
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  calculerResultatsSemestre('gradesTableS1');
+  calculerResultatsSemestre('gradesTableS2');
+});
+
+
+
+
 
 
 
@@ -286,4 +363,61 @@ renderSchedule(scheduleData);
 
 
 
+// planning des examens========================
 
+// Quand on arrive sur la page étudiant
+window.addEventListener('DOMContentLoaded', () => {
+  const select = document.getElementById('studentClasseSelect');
+  const container = document.getElementById('studentExamTableContainer');
+
+  // Recharge à l'ouverture (si une classe est déjà sélectionnée)
+  if (select.value) displayStudentExams(select.value);
+
+  // Quand la classe change
+  select.addEventListener('change', () => {
+    const selectedClass = select.value;
+    if (!selectedClass) {
+      container.innerHTML = "<p>Veuillez sélectionner une classe.</p>";
+      return;
+    }
+    displayStudentExams(selectedClass);
+  });
+});
+
+function displayStudentExams(classe) {
+  const container = document.getElementById('studentExamTableContainer');
+  container.innerHTML = ""; // Nettoie
+
+  const data = localStorage.getItem('examsData');
+  if (!data) {
+    container.innerHTML = "<p>Aucune donnée d'examen disponible.</p>";
+    return;
+  }
+
+  const examsData = JSON.parse(data);
+  const exams = examsData[classe];
+
+  if (!exams || exams.length === 0) {
+    container.innerHTML = `<p>🛈 Aucun examen prévu pour la classe ${classe}.</p>`;
+    return;
+  }
+
+  const table = document.createElement('table');
+  table.className = "exam-table-student";
+  table.innerHTML = `
+    <thead>
+      <tr><th>Module</th><th>Date</th><th>Heure</th><th>Salle</th></tr>
+    </thead>
+    <tbody>
+      ${exams.map(exam => `
+        <tr>
+          <td data-label="Module">${exam.module}</td>
+          <td data-label="Date">${exam.date}</td>
+          <td data-label="Heure">${exam.heure}</td>
+          <td data-label="Salle">${exam.salle}</td>
+        </tr>
+      `).join('')}
+    </tbody>
+  `;
+  container.appendChild(table);
+}

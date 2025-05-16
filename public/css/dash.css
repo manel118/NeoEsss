@@ -679,7 +679,7 @@ table th {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 500px;
+    width: 450px;
 	height: 460px;
 
 	
@@ -874,7 +874,7 @@ button.btn-close {
     background: rgb(175, 211, 245);
     padding: 10px;
     border-radius: 10px;
-    width: 500px;
+    width: 450px;
 }
 .modal-content input, .modal-content select {
     width: 80%;
@@ -958,7 +958,7 @@ button.btn-close {
 	background: white;
 	padding: 20px;
 	border-radius: 8px;
-	width: 400px;
+	width: 450px;
   }
   .modal-content h2{
 	margin-bottom: 10px;
@@ -979,13 +979,13 @@ button.btn-close {
   .modal-content button,
   .modal-content label {
 	display: block;
-	width: 70%;
+	width: 80%;
 	margin-bottom: 5px;
   }
   
 
   .modal-content select {
-	width: 70%;
+	width: 80%;
 	padding: 6px;
 	margin-bottom: 5px;
   }
@@ -999,7 +999,7 @@ button.btn-close {
 
 #userModal .modal-content label, 
 #userModal .modal-content input, select{
-	width: 60%;
+	width: 80%;
 	margin: 6px;
 	display: inline;
 }
@@ -1027,4 +1027,158 @@ button.btn-close {
 	color: #1120e8;
   }
   
-  
+  /* Matieres Section =========*/
+#matiereTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+#matiereTable th, #matiereTable td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+#matiereTable td button {
+    display: inline-block;
+    margin: 0 3px;
+    padding: 4px 8px;
+    border: none;
+    background-color: #3d4df5;
+    cursor: pointer;
+}
+
+.modal {
+    position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: none;
+	align-items: center;
+	justify-content: center;
+	z-index: 999;
+}
+.modal.show {
+    display: flex;
+}
+.modal-content {
+    background: rgb(165, 207, 247);
+    padding: 20px;
+    border-radius: 10px;
+    width: 450px;
+	max-height: 90vh; /* Limite la hauteur à 90% de l'écran */
+	overflow-y: auto;  /* Active le scroll vertical si besoin */
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+.modal-content input, .modal-content select {
+    width: 80%;
+    padding: 8px;
+    margin-bottom: 10px;
+	border-radius: 10px;
+}
+#searchMatiereInput{
+	padding: 10px;
+	border-radius: 10px;
+	width: 50%;
+}
+
+
+/* Exams section*/
+.class-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.card {
+  background-color: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  min-width: 120px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+  background-color: #dceeff;
+}
+
+.exam-table {
+  margin-bottom: 30px;
+  display: none;
+}
+
+.exam-table.active {
+  display: table;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  justify-content: center; align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  width: 450px;
+  border-radius: 10px;
+}
+
+
+
+/*Deliberation section ========================*/
+
+/* Tout est encapsulé dans #deliberation-section */
+/* Ciblé uniquement pour la section délibération */
+.deliberation-section {
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.deliberation-section h2 {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.table-wrapper {
+  overflow-x: auto;
+}
+
+#table-s1, #table-s2 {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 1000px;
+}
+
+#table-s1 th,
+#table-s1 td,
+#table-s2 th,
+#table-s2 td {
+  border: 1px solid #ccc;
+  padding: 6px 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+#table-s1 th.ue-head,
+#table-s2 th.ue-head {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.subtext {
+  font-size: 11px;
+  color: #666;
+}
+.note-faible {
+  background-color: #f8d7da; /* rouge clair */
+  color: #721c24;
+  font-weight: bold;
+}

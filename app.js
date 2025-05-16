@@ -9,6 +9,7 @@ const studentRouters = require('./routers/StudantRoute')
 const teacherRouters = require('./routers/TeacherRoute')
 const {requireAuth} = require('./middleware/authMiddleware')
 const path = require("path")
+//const mockDataRoute = require("./routers/mockData");// deliberation
 
 //midllewares
 app.use(express.json());
@@ -21,11 +22,15 @@ app.set('views', [path.join(__dirname, 'views'),
     path.join(__dirname, 'views/esp-Etu/'),  path.join(__dirname, 'views/Dashboard/')]);
 app.use(cookieParser())
 
+
 //connect to DB
 mongoose.connect(dbURI)
     .then(() => {
-        app.listen(3000)
-    }).catch(err => console.log(err.message))
+        app.listen(3000, () => {
+            console.log("✅ Server running on http://localhost:3000");
+        });
+    })
+    .catch(err => console.log(err.message));
 
 
     // website
@@ -63,3 +68,12 @@ app.get('/read-cookies', (req, res) => {
 app.use('/admin', adminRouters)
 app.use('/student', studentRouters)
 app.use('/teacher', teacherRouters)
+
+
+// deliberation
+//app.use("/api/mockdata", mockDataRoute);
+/*
+app.listen(3000, () => {
+  console.log("Backend mock démarré sur http://localhost:3000");
+});
+*/

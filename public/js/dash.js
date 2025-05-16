@@ -176,6 +176,90 @@ allSideMenu.forEach(item => {
   });
 });
 
+// todoList======================
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const todoList = document.querySelector('.todo-list');
+    const addBtn = document.querySelector('.head .bx-plus');
+
+    // Charger les tâches depuis localStorage
+    function loadTodos() {
+      const todos = JSON.parse(localStorage.getItem('todos')) || [];
+      todoList.innerHTML = '';
+      todos.forEach(todo => {
+        addTodoToDOM(todo.text, todo.completed);
+      });
+    }
+
+    // Ajouter un nouvel élément dans le DOM
+    function addTodoToDOM(text, completed = false) {
+      const li = document.createElement('li');
+      li.className = completed ? 'completed' : 'not-completed';
+
+      const p = document.createElement('p');
+      p.textContent = text;
+
+      const actions = document.createElement('div');
+
+      const toggleBtn = document.createElement('i');
+      toggleBtn.className = 'bx bx-check';
+      toggleBtn.style.cursor = 'pointer';
+      toggleBtn.title = 'Marquer comme terminé';
+
+      const deleteBtn = document.createElement('i');
+      deleteBtn.className = 'bx bx-trash';
+      deleteBtn.style.cursor = 'pointer';
+      deleteBtn.title = 'Supprimer';
+
+      actions.appendChild(toggleBtn);
+      actions.appendChild(deleteBtn);
+
+      li.appendChild(p);
+      li.appendChild(actions);
+
+      // Toggle completed
+      toggleBtn.addEventListener('click', () => {
+        li.classList.toggle('completed');
+        li.classList.toggle('not-completed');
+        saveTodos();
+      });
+
+      // Delete
+      deleteBtn.addEventListener('click', () => {
+        li.remove();
+        saveTodos();
+      });
+
+      todoList.appendChild(li);
+    }
+
+    // Sauvegarder les tâches dans localStorage
+    function saveTodos() {
+      const todos = [];
+      document.querySelectorAll('.todo-list li').forEach(li => {
+        todos.push({
+          text: li.querySelector('p').textContent,
+          completed: li.classList.contains('completed'),
+        });
+      });
+      localStorage.setItem('todos', JSON.stringify(todos));
+    }
+
+    // Ajouter nouvelle tâche
+    addBtn.addEventListener('click', () => {
+      const text = prompt('Entrez une nouvelle tâche :');
+      if (text && text.trim() !== '') {
+        addTodoToDOM(text.trim(), false);
+        saveTodos();
+      }
+    });
+
+    // Initialisation
+    loadTodos();
+  });
+
+
+
 
 // Enseignats ============================
 
@@ -523,6 +607,8 @@ async function fetchStudents() {
   }
 
 }
+
+
 // Modules Section ==================
 const addModuleBtn = document.getElementById('addModuleBtn');
 const moduleModal = document.getElementById('moduleModal');
@@ -712,19 +798,18 @@ let currentCell = null;
 
 document.getElementById("loadScheduleBtn").addEventListener("click", () => {
   const Classe = document.getElementById("classe").value;
-  //const specialite = document.getElementById("specialite").value;
-  //const salle = document.getElementById("salle").value;
+
   const semestre = document.getElementById("semestre").value;
 
   if (Classe && semestre) {
-    generateTable();
+    generateTableSch();
     planningContainer.style.display = "block";
   } else {
     alert("Veuillez remplir tous les champs.");
   }
 });
 
-function generateTable() {
+function generateTableSch() {
   planningTable.innerHTML = "";
 
   const header = `<tr><th>Jour / Heure</th>${heures.map(h => `<th>${h}</th>`).join("")}</tr>`;
@@ -762,7 +847,8 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
   const module = document.getElementById("module").value;
   const professeur = document.getElementById("professeur").value.trim();
-  //const classe = document.getElementById("classe").value;
+  const salle = document.getElementById("salle").value;
+  const seance = document.getElementById("seance").value;
   const jour = document.getElementById("selectedDayVisible").value;
   const heure = document.getElementById("selectedTimeVisible").value;
 
@@ -792,9 +878,9 @@ form.addEventListener("submit", (e) => {
   // Insérer le contenu dans la cellule
   currentCell.innerHTML = `
     <div class="creneau-box">
-      <strong>${module}</strong><br>
+     <strong>${module}</strong><br>
       ${professeur}<br>
-      ${classe}
+       ${seance} [${salle}]
       <div class="actions">
         <button class="edit-btn">✏️</button>
         <button class="delete-btn">🗑️</button>
@@ -822,22 +908,24 @@ function addActions(cell) {
     const module = cell.querySelector("strong").innerText;
     const lines = cell.querySelectorAll("br");
     const enseignant = lines[0].nextSibling.textContent.trim();
-    //const classe = lines[1].nextSibling.textContent.trim();
+    const salle = lines[1].nextSibling.textContent.trim();
+    const seance = lines[1].nextSibling.textContent.trim();
 
     document.getElementById("module").value = module;
     document.getElementById("professeur").value = enseignant;
-    //document.getElementById("classe").value = classe;
+    document.getElementById("salle").value = salle;
+    document.getElementById("seance").value = seance;
     openModal(cell.dataset.jour, cell.dataset.heure, cell);
   });
 }
 
-addCreneauBtn.addEventListener("click", () => {
-  if (!currentCell) {
-    alert("Veuillez d'abord cliquer sur une cellule du tableau pour sélectionner un créneau.");
-    return;
-  }
-  modal.classList.add("show");
-});
+//addCreneauBtn.addEventListener("click", () => {
+//  if (!currentCell) {
+//    alert("Veuillez d'abord cliquer sur une cellule du tableau pour sélectionner un créneau.");
+//  return;
+//  }
+//  modal.classList.add("show");
+// });
 
 
 
@@ -1036,6 +1124,707 @@ document.querySelector(".logout").addEventListener("click", async (e) => {
 });
 
 
+// Matieres Section ==================
+const addMatiereBtn = document.getElementById('addMatiereBtn');
+const matiereModal = document.getElementById('matiereModal');
+const closeMatiereModalBtn = document.getElementById('closeMatiereModalBtn');
+const matiereForm = document.getElementById('matiereForm');
+const matiereTable = document.getElementById('matiereTable').getElementsByTagName('tbody')[0];
+const searchMatiereInput = document.getElementById('searchMatiereInput');
+
+// Ouvrir/fermer modal
+addMatiereBtn.addEventListener('click', () => matiereModal.classList.add('show'));
+closeMatiereModalBtn.addEventListener('click', () => matiereModal.classList.remove('show'));
+
+// Soumission du formulaire
+matiereForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById('matiereName').value;
+    const coef = document.getElementById('coefficient').value;
+    const classe = document.getElementById('classeMat').value;
+    const crédit = document.getElementById('crédit').value;
+    const unité = document.getElementById('unité').value;
+    const cour = document.getElementById('cour').value;
+    const TD = document.getElementById('TD').value;
+    const TP = document.getElementById('TP').value;
+   
+
+    //const selectedClasses = Array.from(document.querySelectorAll('#classList input[type="checkbox"]:checked'))
+        //.map(cb => cb.value).join(', ');
+
+
+	// ✅ Vérification des doublons
+    const existingRows = matiereTable.getElementsByTagName('tr');
+    let duplicateFound = false;
+
+    Array.from(existingRows).forEach(row => {
+        const existingName = row.cells[0].textContent.trim().toLowerCase();
+        if (existingName === matiereName.trim().toLowerCase()) {
+            duplicateFound = true;
+        }
+    });
+
+    if (duplicateFound) {
+        alert("Ce module existe déjà !");
+        return;
+    }
+		
+    // Ajouter une nouvelle ligne au tableau
+    const newRow = matiereTable.insertRow();
+    newRow.innerHTML = `
+        <td>${name}</td>
+        <td>${coef}</td>
+        <td>${classe}</td>
+        <td>${crédit}</td>
+        <td>${unité}</td>
+        <td>${cour}</td>
+        <td>${TD}</td>
+        <td>${TP}</td>
+        <td>
+            <button class="edit-btn">✏️</button>
+            <button class="delete-btn">🗑️</button>
+        </td>
+    `;
+
+    matiereForm.reset();
+    matiereModal.classList.remove('show');
+});
+
+// Recherche
+searchMatiereInput.addEventListener('input', function () {
+    const query = this.value.toLowerCase();
+    const rows = matiereTable.getElementsByTagName('tr');
+    Array.from(rows).forEach(row => {
+        const name = row.cells[0].textContent.toLowerCase();
+        const classes = row.cells[2].textContent.toLowerCase();
+        row.style.display = (name.includes(query) || classes.includes(query)) ? '' : 'none';
+    });
+});
+
+
+// Fonction pour gérer les clics sur les boutons Modifier et Supprimer
+matiereTable.addEventListener('click', function (e) {
+    const target = e.target;
+    const row = target.closest('tr');
+
+    if (target.classList.contains('delete-btn')) {
+        if (confirm('Voulez-vous vraiment supprimer ce module ?')) {
+            row.remove();
+        }
+    }
+
+    if (target.classList.contains('edit-btn')) {
+        // Remplir le formulaire avec les données existantes
+        const name = row.cells[0].textContent;
+        const coef = row.cells[1].textContent;
+        const classe = row.cells[2].textContent;
+        const crédit = row.cells[3].textContent;
+        const unité = row.cells[4].textContent;
+        //const classes = row.cells[2].textContent.split(', ');
+        
+        const cour = row.cells[5].textContent;
+        const TD = row.cells[6].textContent;
+        const TP = row.cells[7].textContent;
+
+
+        document.getElementById('moduleName').value = name;
+        document.getElementById('coefficient').value = coef;
+        document.getElementById('classeMat').value = classe;
+        document.getElementById('crédit').value = crédit;
+        document.getElementById('cour').value = cour;
+        document.getElementById('TD').value = TD;
+        document.getElementById('TP').value = TP;
+        document.getElementById('unité').value = unité;
+       
+        
+
+        // Cocher les cases correspondantes
+        //const checkboxes = document.querySelectorAll('#classList input[type="checkbox"]');
+        //checkboxes.forEach(cb => {
+        //    cb.checked = classes.includes(cb.value);
+       // });
+
+        // Supprimer la ligne actuelle (sera remplacée après enregistrement)
+        row.remove();
+
+        // Réouvrir le modal
+        matiereModal.classList.add('show');
+    }
+});
+
+
+// Exams section=================================
+
+// Exams section=================================
+
+const classCards = document.querySelectorAll('.card');
+const examTablesContainer = document.getElementById('examTablesContainer');
+const examModal = document.getElementById('examModal');
+const closeExamModal = document.getElementById('closeExamModal');
+const examForm = document.getElementById('examForm');
+
+let currentClasse = "";
+
+// Récupérer les données existantes du localStorage
+let examsData = JSON.parse(localStorage.getItem('examsData')) || {};
+
+// Affiche les examens enregistrés au démarrage
+classCards.forEach(card => {
+  card.addEventListener('click', () => {
+    currentClasse = card.dataset.classe;
+    showExamTable(currentClasse);
+  });
+});
+
+function saveExamsToStorage() {
+  localStorage.setItem('examsData', JSON.stringify(examsData));
+}
+
+function showExamTable(classe) {
+  // Cacher tous les tableaux
+  document.querySelectorAll('.exam-table').forEach(table => table.classList.remove('active'));
+
+  // Supprimer anciens boutons
+  document.querySelectorAll('.exam-table-add-btn').forEach(btn => btn.remove());
+
+  let table = document.getElementById(`table-${classe}`);
+  if (!table) {
+    table = document.createElement('table');
+    table.className = 'exam-table active';
+    table.id = `table-${classe}`;
+    table.innerHTML = `
+      <caption>Planning des examens - ${classe}</caption>
+      <thead>
+        <tr><th>Module</th><th>Date</th><th>Heure</th><th>Salle</th><th>Actions</th></tr>
+      </thead>
+      <tbody></tbody>
+    `;
+    examTablesContainer.appendChild(table);
+  } else {
+    table.classList.add('active');
+    table.querySelector('tbody').innerHTML = ''; // Vider le tbody pour recharger proprement
+  }
+
+  const addBtn = document.createElement('button');
+  addBtn.textContent = "➕ Ajouter un examen";
+  addBtn.className = "exam-table-add-btn";
+  addBtn.addEventListener('click', () => openExamModal(classe));
+  examTablesContainer.insertBefore(addBtn, table);
+
+  // Afficher les examens existants depuis examsData
+  const tbody = table.querySelector('tbody');
+  if (examsData[classe]) {
+    examsData[classe].forEach(exam => {
+      const row = createExamRow(classe, exam.module, exam.date, exam.heure, exam.salle);
+      tbody.appendChild(row);
+    });
+  }
+}
+
+function openExamModal(classe) {
+  document.getElementById('examClasse').value = classe;
+  examModal.style.display = 'flex';
+}
+
+closeExamModal.addEventListener('click', () => {
+  examModal.style.display = 'none';
+  examForm.reset();
+});
+
+function createExamRow(classe, module, date, heure, salle) {
+  const row = document.createElement('tr');
+  row.innerHTML = `
+    <td>${module}</td>
+    <td>${date}</td>
+    <td>${heure}</td>
+    <td>${salle}</td>
+    <td>
+      <button class="edit-btn">✏️</button>
+      <button class="delete-btn">🗑️</button>
+    </td>
+  `;
+
+  row.querySelector('.edit-btn').addEventListener('click', () => {
+    document.getElementById('examClasse').value = classe;
+    document.getElementById('examModule').value = module;
+    document.getElementById('examDate').value = date;
+    document.getElementById('examHeure').value = heure;
+    document.getElementById('examSalle').value = salle;
+
+    row.remove();
+    examsData[classe] = examsData[classe].filter(e => !(e.module === module && e.date === date && e.heure === heure));
+    saveExamsToStorage();
+    examModal.style.display = 'flex';
+  });
+
+  row.querySelector('.delete-btn').addEventListener('click', () => {
+    row.remove();
+    examsData[classe] = examsData[classe].filter(e => !(e.module === module && e.date === date && e.heure === heure));
+    saveExamsToStorage();
+  });
+
+  return row;
+}
+
+examForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const classe = document.getElementById('examClasse').value;
+  const module = document.getElementById('examModule').value;
+  const date = document.getElementById('examDate').value;
+  const heure = document.getElementById('examHeure').value;
+  const salle = document.getElementById('examSalle').value;
+
+  const table = document.getElementById(`table-${classe}`);
+  const tbody = table.querySelector('tbody');
+
+  // Vérification des doublons
+  const conflict = (examsData[classe] || []).some(exam => exam.date === date && exam.heure === heure);
+  if (conflict) {
+    alert("❌ Un examen est déjà prévu à cette date et cette heure pour cette classe.");
+    return;
+  }
+
+  const newExam = { module, date, heure, salle };
+  if (!examsData[classe]) examsData[classe] = [];
+  examsData[classe].push(newExam);
+  saveExamsToStorage();
+
+  const newRow = createExamRow(classe, module, date, heure, salle);
+  tbody.appendChild(newRow);
+
+  examModal.style.display = 'none';
+  examForm.reset();
+});
 
 
 
+
+
+
+
+
+// deliberation section=======================================
+
+/*
+//==cote frontend - voir app.js et mockData.js dans routers
+async function chargerMockData() {
+  const res = await fetch("http://localhost:3000/api/mockdata/m1si/2024");
+  const data = await res.json();
+  console.log(data); // vérifie dans la console
+
+  // Appelle ici ta fonction qui remplit les tableaux avec `data.semestres`
+  remplirTableauxDeliberation(data.semestres);
+}
+document.addEventListener("DOMContentLoaded", () => {
+  chargerMockData();
+});
+//Étapes principales de la fonction
+function remplirTableauxDeliberation(data) {
+  const semestre1 = data.S1;
+  const semestre2 = data.S2;
+
+  remplirTableauSemestre("tableauS1", semestre1);
+  remplirTableauSemestre("tableauS2", semestre2);
+
+  remplirTableauAnnuel("tableauAnnuel", semestre1.etudiants, semestre2.etudiants);
+}
+
+/*
+//Fonction pour remplir un tableau de semestre
+
+function remplirTableauSemestre(idTable, semestre) {
+  const table = document.getElementById(idTable); 
+ table.innerHTML = ""; // vider l'ancien contenu
+
+  // En-tête
+ const thead = document.createElement("thead");
+ const trHead = document.createElement("tr");
+
+ trHead.innerHTML = `<th>Étudiant</th>`;
+  const toutesMatieres = Object.values(semestre.ue).flatMap(ue => ue.matieres);
+  toutesMatieres.forEach(m => {
+    trHead.innerHTML += `<th>${m.nom}</th>`;
+  });
+  trHead.innerHTML += `<th>Moyenne S.</th><th>Résultat</th>`;
+  thead.appendChild(trHead);
+  table.appendChild(thead);
+
+  // Corps
+  const tbody = document.createElement("tbody");
+
+  semestre.etudiants.forEach(etud => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${etud.nom}</td>`;
+
+    let total = 0;
+    let coeffTotal = 0;
+
+    toutesMatieres.forEach(m => {
+      const note = etud.evaluations[m.id]?.moyenne || 0;
+      tr.innerHTML += `<td>${note.toFixed(1)}</td>`;
+      total += note * m.coeff;
+      coeffTotal += m.coeff;
+    });
+
+    const moyenne = (total / coeffTotal).toFixed(2);
+    tr.innerHTML += `<td>${moyenne}</td>`;
+
+    tr.innerHTML += `
+      <td>
+        <select>
+          <option value="admis">Admis</option>
+          <option value="rattrapage">Rattrapage</option>
+          <option value="ajourné">Ajourné</option>
+        </select>
+      </td>
+   `;
+
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(tbody);
+}
+*/
+
+
+/*
+//Fonction pour le tableau Annuel
+function remplirTableauAnnuel(idTable, etudiantsS1, etudiantsS2) {
+  const table = document.getElementById(idTable);
+  table.innerHTML = "";
+
+  const thead = document.createElement("thead");
+  thead.innerHTML = `
+    <tr>
+      <th>Étudiant</th>
+      <th>Moy S1</th>
+      <th>Moy S2</th>
+      <th>Moyenne Générale</th>
+      <th>Décision</th>
+    </tr>
+  `;
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+
+  etudiantsS1.forEach((etudS1, i) => {
+    const etudS2 = etudiantsS2[i];
+    const moy1 = calculerMoyenne(etudS1);
+    const moy2 = calculerMoyenne(etudS2);
+    const moyenneGen = ((moy1 + moy2) / 2).toFixed(2);
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${etudS1.nom}</td>
+      <td>${moy1.toFixed(2)}</td>
+      <td>${moy2.toFixed(2)}</td>
+      <td>${moyenneGen}</td>
+      <td>
+        <select>
+          <option value="admis">Admis</option>
+          <option value="rattrapage">Rattrapage</option>
+          <option value="ajourné">Ajourné</option>
+          <option value="passage par rachat">Rachat</option>
+        </select>
+      </td>
+    `;
+
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(tbody);
+}
+
+function calculerMoyenne(etud) {
+  const notes = Object.values(etud.evaluations).map(ev => ev.moyenne);
+  if (notes.length === 0) return 0;
+  const sum = notes.reduce((acc, n) => acc + n, 0);
+  return sum / notes.length;
+}
+*/
+
+// Données simulées
+const mockData = {
+  classe: "M1 SI",
+  semestres: {
+    S1: {
+      ue: [
+        {
+          nom: "UEF",
+          matieres: [
+            { nom: "ACPS", coeff: 2, credit: 4 },
+            { nom: "AQPS", coeff: 2, credit: 4 },
+            { nom: "MBS", coeff: 1, credit: 2 }
+          ]
+        },
+        {
+          nom: "UEM",
+          matieres: [
+            { nom: "MR", coeff: 2, credit: 3 },
+            { nom: "APPS", coeff: 1, credit: 2 }
+          ]
+        }
+      ],
+      etudiants: [
+        {
+          nom: "Ali Benali",
+          notes: {
+            ACPS: 14.5,
+            AQPS: 12,
+            MBS: 11,
+            MR: 13,
+            APPS: 15
+          },
+          decision: "admis"
+        },
+        {
+          nom: "Sara Kaci",
+          notes: {
+            ACPS: 9,
+            AQPS: 8.5,
+            MBS: 10,
+            MR: 12,
+            APPS: 10
+          },
+          decision: "rattrapage"
+        },
+        {
+          nom: "Yacine Bouzid",
+          notes: {
+            ACPS: 16,
+            AQPS: 14,
+            MBS: 15,
+            MR: 14,
+            APPS: 16
+          },
+          decision: "admis"
+        }
+      ]
+    },
+    S2: {
+      ue: [
+        {
+          nom: "UED",
+          matieres: [
+            { nom: "Analyse", coeff: 3, credit: 5 },
+            { nom: "Statistiques", coeff: 2, credit: 3 }
+          ]
+        },
+        {
+          nom: "UET",
+          matieres: [
+            { nom: "Projet", coeff: 1, credit: 2 }
+          ]
+        }
+      ],
+      etudiants: [
+        {
+          nom: "Ali Benali",
+          notes: {
+            Analyse: 13,
+            Statistiques: 14,
+            Projet: 15
+          },
+          decision: "admis"
+        },
+        {
+          nom: "Sara Kaci",
+          notes: {
+            Analyse: 10,
+            Statistiques: 4,
+            Projet: 11
+          },
+          decision: "ajourné"
+        },
+        {
+          nom: "Yacine Bouzid",
+          notes: {
+            Analyse: 17,
+            Statistiques: 16,
+            Projet: 18
+          },
+          decision: "admis"
+        }
+      ]
+    }
+  }
+};
+
+//code JavaScript complet pour générer dynamiquement le tableau du S1 / S2
+function calculerMoyenneUE(matieres, notesEtudiant) {
+  let totalNote = 0, totalCoeff = 0;
+  matieres.forEach(m => {
+    if (notesEtudiant[m.nom] !== undefined) {
+      totalNote += notesEtudiant[m.nom] * m.coeff;
+      totalCoeff += m.coeff;
+    }
+  });
+  return totalCoeff > 0 ? (totalNote / totalCoeff).toFixed(2) : "-";
+}
+
+function calculerMoyenneGlobale(etudiant, ueList) {
+  let totalNote = 0, totalCoeff = 0;
+  ueList.forEach(ue => {
+    ue.matieres.forEach(m => {
+      const note = etudiant.notes[m.nom];
+      if (note !== undefined) {
+        totalNote += note * m.coeff;
+        totalCoeff += m.coeff;
+      }
+    });
+  });
+  return totalCoeff > 0 ? (totalNote / totalCoeff).toFixed(2) : "-";
+}
+
+function calculerCreditTotal(etudiant, ueList) {
+  let total = 0;
+  ueList.forEach(ue => {
+    ue.matieres.forEach(m => {
+      const note = etudiant.notes[m.nom];
+      if (note !== undefined && note >= 10) {
+        total += m.credit;
+      }
+    });
+  });
+  return total;
+}
+
+function getTotauxUE(ue) {
+  let totalCoeff = 0, totalCredit = 0;
+  ue.matieres.forEach(m => {
+    totalCoeff += m.coeff;
+    totalCredit += m.credit;
+  });
+  return { totalCoeff, totalCredit };
+}
+
+function generateTable(data, semestreKey, theadId, tbodyId) {
+  const ueList = data.semestres[semestreKey].ue;
+  const etudiants = data.semestres[semestreKey].etudiants;
+
+  
+  const thead = document.getElementById(theadId);
+  if (!thead) {
+  console.error(`Élément introuvable : #${theadId}`);
+  return;
+  }
+  const tr1 = document.createElement("tr");
+  tr1.innerHTML = `<th rowspan="2">Étudiant</th>`;
+
+
+  // Ligne 1 : noms des UE
+  ueList.forEach(ue => {
+    const colspan = ue.matieres.length;
+    tr1.innerHTML += `<th colspan="${colspan}" class="ue-head">${ue.nom}</th>`;
+  });
+
+  // Ajout des colonnes moyennes avec totaux dynamiques
+  ueList.forEach(ue => {
+    const { totalCoeff, totalCredit } = getTotauxUE(ue);
+    tr1.innerHTML += `<th rowspan="2">Moyenne ${ue.nom}<br><span class="subtext">Coef:${totalCoeff}, Cr:${totalCredit}</span></th>`;
+  });
+
+  tr1.innerHTML += `<th rowspan="2">Moyenne générale</th>`;
+  tr1.innerHTML += `<th rowspan="2">Crédits total</th>`;
+  tr1.innerHTML += `<th rowspan="2">Résultat</th>`;
+
+  // Ligne 2 : matières avec leurs infos
+  const tr2 = document.createElement("tr");
+  ueList.forEach(ue => {
+    ue.matieres.forEach(m => {
+      tr2.innerHTML += `<th>${m.nom}<br><span class="subtext">Coef:${m.coeff}, Cr:${m.credit}</span></th>`;
+    });
+  });
+
+  thead.appendChild(tr1);
+  thead.appendChild(tr2);
+
+  // Corps du tableau
+  const tbody = document.getElementById(tbodyId);
+  etudiants.forEach(etudiant => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${etudiant.nom}</td>`;
+
+    // Notes par matière
+    ueList.forEach(ue => {
+      ue.matieres.forEach(m => {
+        const note = etudiant.notes[m.nom];
+        const dangerClass = (note !== undefined && note <= 5) ? "note-faible" : "";
+        tr.innerHTML += `<td class="${dangerClass}">${note !== undefined ? note : "-"}</td>`;
+      });
+    });
+
+    // Moyennes par UE
+    ueList.forEach(ue => {
+      const moy = calculerMoyenneUE(ue.matieres, etudiant.notes);
+      tr.innerHTML += `<td>${moy}</td>`;
+    });
+
+    // Moyenne générale, crédits totaux, résultat
+    const moyenneG = calculerMoyenneGlobale(etudiant, ueList);
+    const creditsTotal = calculerCreditTotal(etudiant, ueList);
+    tr.innerHTML += `<td>${moyenneG}</td>`;
+    tr.innerHTML += `<td>${creditsTotal}</td>`;
+    tr.innerHTML += `
+      <td>
+        <select>
+          <option value="admis" ${etudiant.decision === "admis" ? "selected" : ""}>Admis</option>
+          <option value="ajourné" ${etudiant.decision === "ajourné" ? "selected" : ""}>Ajourné</option>
+          <option value="rattrapage" ${etudiant.decision === "rattrapage" ? "selected" : ""}>Rattrapage</option>
+          <option value="passage par rachat" ${etudiant.decision === "passage par rachat" ? "selected" : ""}>Rachat</option>
+        </select>
+      </td>
+    `;
+
+    tbody.appendChild(tr);
+  });
+}
+
+// Appel pour S1 et S2
+generateTable(mockData, "S1", "thead-s1", "tbody-s1");
+generateTable(mockData, "S2", "thead-s2", "tbody-s2");
+
+
+// tableau annuel
+function generateAnnualTable(data) {
+  const tbody = document.getElementById("tbody-annuelle");
+
+  const etudiantsS1 = data.semestres.S1.etudiants;
+  const etudiantsS2 = data.semestres.S2.etudiants;
+
+  etudiantsS1.forEach((etudiantS1, index) => {
+    const etudiantS2 = etudiantsS2[index]; // suppose que même ordre
+
+    const moyenneS1 = parseFloat(calculerMoyenneGlobale(etudiantS1, data.semestres.S1.ue));
+    const moyenneS2 = parseFloat(calculerMoyenneGlobale(etudiantS2, data.semestres.S2.ue));
+    const moyenneGenerale = (!isNaN(moyenneS1) && !isNaN(moyenneS2)) 
+      ? ((moyenneS1 + moyenneS2) / 2).toFixed(2) 
+      : "-";
+
+
+    const creditS1 = calculerCreditTotal(etudiantS1, data.semestres.S1.ue);
+    const creditS2 = calculerCreditTotal(etudiantS2, data.semestres.S2.ue);
+    const creditsTotal = creditS1 + creditS2;
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${etudiantS1.nom}</td>
+      <td>${moyenneS1}</td>
+      <td>${moyenneS2}</td>
+      <td>${moyenneGenerale}</td>
+      <td>${creditsTotal}</td>
+      <td>
+        <select>
+          <option value="admis">Admis</option>
+          <option value="ajourné">Ajourné</option>
+          <option value="rattrapage">Rattrapage</option>
+          <option value="passage par rachat">Rachat</option>
+        </select>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+generateAnnualTable(mockData);

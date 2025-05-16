@@ -29,31 +29,37 @@
 			</li>
 			<li>
 				<a href="#" id="btn-my-courses">
-					<i class='bx bxs-group' ></i>
+					<i class='bx bx-folder-open ' ></i>
 					<span class="text"> My courses</span>
 				</a>
 			</li>
 			<li>
 				<a href="#" id="btn-my-grades">
-					<i class='bx bxs-group' ></i>
+					<i class='bx bx-calculator ' ></i>
 					<span class="text"> My grades </span>
 				</a>
 			</li>
 			<li>
 				<a href="#" id="btn-schedule">
-					<i class='bx bxs-shopping-bag-alt' ></i>
+					<i class='bx bx-calendar-event ' ></i>
 					<span class="text">Schedule </span>
 				</a>
 			</li>
 			<li>
+				<a href="#" id="btn-exams">
+					<i class='bx bx-calendar-check  ' ></i>
+					<span class="text">Consultation des Examens</span>
+				</a>
+			</li>
+			<li>
 				<a href="#" id="btn-requests">
-					<i class='bx bxs-doughnut-chart' ></i>
+					<i class='bx bx-navigation ' ></i>
 					<span class="text">Requests</span>
 				</a>
 			</li>
 			<li>
 				<a href="#" id="btn-notification">
-					<i class='bx bxs-message-dots' ></i>
+					<i class='bx bx-message ' ></i>
 					<span class="text">notification</span>
 				</a>
 			</li>
@@ -169,48 +175,153 @@
 
 <!-- My Grades -->
 <section id="my-grades" style="display: none;" class="hidden-section">
-		<h2 class="section-title"> 🧮 My Grades</h2>
+	<div id="my-grades-s">
+		<h2 class="section-title"> 🧮 Mes Notes - Semestre 1</h2>
+		
 		<div class="grades-container">
-			<table class="grades-table">
+			<table class="grades-table" id="gradesTableS1">
 				<thead>
 					<tr>
+						<th>UE</th>
 						<th>Module</th>
 						<th>Coefficient</th>
+						<th>Crédit</th>
 						<th>Note CC</th>
 						<th>Note Examen</th>
 						<th>Moyenne</th>
+						<th>Crédit Obtenu</th>
 					</tr>
 				</thead>
 				<tbody>
+					<!-- Exemple UE 1 -->
 					<tr>
+						<td rowspan="2">UE Fondamentale</td>
 						<td>Mathématiques</td>
 						<td>3</td>
+						<td>5</td>
 						<td>12</td>
 						<td>14</td>
-						<td>13.33</td>
+						<td></td> <!-- moyenne auto -->
+						<td></td> <!-- crédit obtenu auto -->
 					</tr>
 					<tr>
 						<td>Informatique</td>
 						<td>4</td>
+						<td>6</td>
 						<td>15</td>
 						<td>16</td>
-						<td>15.67</td>
+						<td></td>
+						<td></td>
 					</tr>
+
+					<!-- Exemple UE 2 -->
 					<tr>
+						<td>UE Complémentaire</td>
 						<td>Réseaux</td>
 						<td>2</td>
+						<td>3</td>
 						<td>10</td>
 						<td>13</td>
-						<td>12.00</td>
+						<td></td>
+						<td></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-	
+
+		<!-- Résumé du semestre -->
+		
+		<div class="resultat-semestre" data-semestre="S1">
+			<p><strong>Moyenne du Semestre 1 :</strong> <span class="semester-average">--</span></p>
+			<p><strong>Total Crédits Obtenus :</strong> <span class="semester-credits">--</span></p>
+			<p><strong>Décision :</strong> <span class="semester-decision">--</span></p>
+		</div>
+
+
+	</div>
+
+	<div id="my-grades-s2">
+		<h2 class="section-title">🧮 Mes Notes - Semestre 2</h2>
+
+		<div class="grades-container">
+			<table class="grades-table" id="gradesTableS2">
+				<thead>
+					<tr>
+						<th>UE</th>
+						<th>Module</th>
+						<th>Coefficient</th>
+						<th>Crédit</th>
+						<th>Note CC</th>
+						<th>Note Examen</th>
+						<th>Moyenne</th>
+						<th>Crédit Obtenu</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td rowspan="2">UE Professionnelle</td>
+						<td>Programmation Web</td>
+						<td>3</td>
+						<td>5</td>
+						<td>13</td>
+						<td>15</td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Bases de Données</td>
+						<td>4</td>
+						<td>6</td>
+						<td>12</td>
+						<td>14</td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>UE Transversale</td>
+						<td>Anglais Technique</td>
+						<td>2</td>
+						<td>2</td>
+						<td>9</td>
+						<td>10</td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<!-- Résumé du semestre 2 -->
+		<div class="resultat-semestre" data-semestre="S2">
+			<p><strong>Moyenne du Semestre 1 :</strong> <span class="semester-average">--</span></p>
+			<p><strong>Total Crédits Obtenus :</strong> <span class="semester-credits">--</span></p>
+			<p><strong>Décision :</strong> <span class="semester-decision">--</span></p>
+		</div>
+	</div>
 </section>
 
 
 
+<!-- plannung des examens-->
+ <section id="exams" style="display: none;" class="hidden-section">
+	<h2>📅 Mon Planning d'Examens</h2>
+
+		<label for="studentClasseSelect">Sélectionner votre classe :</label>
+		<select id="studentClasseSelect">
+			<option value="">-- Choisissez une classe --</option>
+			<option value="M1 SI">M1 SI</option>
+			<option value="M2 SI">M2 SI</option>
+			<option value="M1 Act">M1 Act</option>
+			<option value="M2 Act">M2 Act</option>
+			<option value="M1 droit">M1 Droit</option>
+			<option value="M2 droit">M2 Droit</option>
+			<option value="M1 Mng">M1 Mng</option>
+			<option value="M2 Mng">M2 Mng</option>
+			<!-- Ajoute d'autres classes ici -->
+		</select>
+
+		<div id="studentExamTableContainer"></div>
+ </section>
 
 <!--Requests -->
 <section id="requests" style="display: none;" class="hidden-section">  

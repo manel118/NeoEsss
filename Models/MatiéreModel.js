@@ -10,6 +10,12 @@ const MatierSchema = new mongoose.Schema({
         type : String ,
         enum :["UEF","UET","UED","UEM"]
     },
+    /*
+    semestre: { 
+        type: String,
+        enum: ['S1', 'S2'],
+        required: true },
+    */
     classe : String 
 },{ timestamps: true })
 const MatierModel = mongoose.model('matiere', MatierSchema)
