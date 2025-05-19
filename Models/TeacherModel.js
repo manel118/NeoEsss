@@ -7,7 +7,8 @@ const TeacherSchema = new mongoose.Schema({
     prenom: String,
     telephone: String,
     status: {type: String , 
-        default : "actif"
+        default : "permanant",
+        enum : ["vacataire", "permanant"]
     },
     grade: String,
     classe: [{ type: mongoose.Schema.Types.ObjectId, ref: 'class', default: null }], //think of getting rid of this line 
