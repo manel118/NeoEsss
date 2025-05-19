@@ -698,52 +698,68 @@ h3 {
 
 
 
-
+/*my grades section*/
 .hidden-section {
-	display: none;
-	padding: 20px;
-}
+      display: none;
+      padding: 20px;
+    }
 
-.section-title {
-	font-size: 24px;
-	margin-bottom: 20px;
-	color: #333;
-}
+    .section-title {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #333;
+    }
 
-.grades-container {
-	overflow-x: auto;
-}
+    .grades-container {
+      overflow-x: auto;
+    }
 
-.grades-table {
-	width: 100%;
-	border-collapse: collapse;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
+    .grades-table {
+      width: 100%;
+      border-collapse: collapse;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
 
-.grades-table th,
-.grades-table td {
-	border: 1px solid #ddd;
-	padding: 12px;
-	text-align: center;
-}
+    .grades-table th,
+    .grades-table td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: center;
+    }
 
-.grades-table th {
-	background-color: var(--light);
-	color: #444;
-}
+    .grades-table th {
+      background-color: var(--light);
+      color: #444;
+    }
 
-.grades-table tr:nth-child(even) {
-	background-color: #f9f9f9;
-}
+    .grades-table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
 
-.grades-table tr:hover {
-	background-color: #f1f1f1;
-}
+    .grades-table tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .semester-summary {
+      margin-top: 20px;
+      background-color: #f5f5f5;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .semester-summary p {
+      font-size: 16px;
+      margin: 8px 0;
+    }
+	  .summary-field {
+      color: #007BFF;
+      font-weight: bold;
+    }
 
 
 
-
-
+/*Mes demandes*/
 
 .request-form {
 	display: flex;
@@ -904,4 +920,81 @@ body.fade-out {
 }
 
 
-/*
+/* planning des examens*/
+
+/* Style général du conteneur */
+#studentExamTableContainer {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+/* Table des examens */
+.exam-table-student {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+   font-family: 'Segoe UI', sans-serif;
+  font-size: 15px;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* En-tête */
+.exam-table-student thead {
+  background-color: #1e88e5;
+  color: white;
+}
+.exam-table-student th,
+.exam-table-student td {
+   padding: 12px 16px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.exam-table-student th {
+  background-color: #f0f0f0;
+}
+/* Dernière ligne sans bord */
+.exam-table-student tbody tr:last-child td {
+  border-bottom: none;
+}
+/* Alternance de couleur des lignes */
+.exam-table-student tbody tr:nth-child(even) {
+  background-color: #f1f7ff;
+}
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .exam-table-student {
+    font-size: 14px;
+  }
+
+  .exam-table-student thead {
+    display: none;
+  }
+
+  .exam-table-student tr {
+    display: block;
+    margin-bottom: 10px;
+    background: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    border-radius: 6px;
+  }
+
+  .exam-table-student td {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid #eeeeee;
+    font-size: 14px;
+  }
+
+  .exam-table-student td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: #333;
+  }
+}

@@ -652,8 +652,39 @@ body {
 	box-shadow: 0 1px 5px rgba(85, 173, 245, 0.806);
 }
 
+ h2 {
+      margin-top: 40px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 30px;
+      background: white;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: center;
+    }
+    th {
+      background-color: #4e73df;
+      color: white;
+    }
+    .tab-buttons {
+      margin-bottom: 10px;
+    }
+    .tab-buttons button {
+      padding: 10px 20px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
 .chart-container {
 	background: white;
+	width: 400px;
+    margin-bottom: 50px;
 	padding: 2rem;
 	border-radius: 12px;
 	box-shadow: 0 1px 10px rgba(0,0,0,0.08);
@@ -721,9 +752,126 @@ body {
 	padding: 10px;
 	border-radius: 5px;
 }
+.attendance-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.attendance-table th,
+.attendance-table td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.attendance-table th {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-add-seance {
+  margin-top: 10px;
+  background-color: #71a0f8;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
 
 
 /* Upload Courses*/
+
+
+/* historique des cours*/
+
+/* Section globale */
+.history-courses-section {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #efeff0;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Carte d'une classe */
+.class-card {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+/* Titre de la classe */
+.class-card h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #333;
+  border-left: 4px solid #007bff;
+  padding-left: 10px;
+}
+
+/* Liste des modules */
+.module-list {
+  margin-left: 10px;
+}
+
+/* Module item */
+.module-item {
+  margin-bottom: 15px;
+  border-top: 1px dashed #ccc;
+  padding-top: 10px;
+}
+
+/* Titre de module (cliquable) */
+.module-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #007bff;
+  cursor: pointer;
+  margin-bottom: 5px;
+  transition: color 0.3s;
+}
+.module-title:hover {
+  color: #0056b3;
+}
+
+/* Liste des cours */
+.course-list {
+  list-style: none;
+  padding-left: 20px;
+  margin-top: 5px;
+}
+
+/* Élément cours */
+.course-list li {
+  background-color: #f1f3f5;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  border-left: 4px solid #17a2b8;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Pour les petits écrans */
+@media screen and (max-width: 600px) {
+  .history-courses-section {
+    padding: 10px;
+  }
+  .class-card h3 {
+    font-size: 18px;
+  }
+  .module-title {
+    font-size: 15px;
+  }
+}
+
+
 
 .upload-courses-section {
 	padding: 2rem;
@@ -918,4 +1066,152 @@ body {
 .notification-date {
 	font-size: 14px;
 	color: #999;
+}
+
+
+/* Messages =======================*/
+
+#noticeForm input, #noticeForm textarea, #noticeForm select {
+	width: 100%;
+	padding: 8px;
+	margin-bottom: 10px;
+  }
+  
+  .notice-card {
+	background: #7cb5f7;
+	border: 2px solid #effefd;
+	padding: 12px;
+	margin-bottom: 10px;
+	border-radius: 10px;
+	
+  }
+
+  hr{
+	margin: 15px;
+	color: #1120e8;
+  }
+
+  /* Fiche de voeux =================================*/
+  /*
+   .container-voeux {
+    padding: 30px;
+    max-width: 900px;
+    margin: auto;
+    font-family: "Segoe UI", sans-serif;
+  }
+
+  h2, h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+  }
+
+  .card {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  label {
+    display: block;
+    margin: 10px 0;
+    font-weight: 500;
+  }
+
+  input[type="text"], input[type="number"], select {
+    width: 100%;
+    padding: 8px 12px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+
+  .module-choice {
+    margin-bottom: 15px;
+  }
+
+  .btn-secondary, .btn-primary {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 15px;
+  }
+
+  .btn-secondary {
+    background-color: #ecf0f1;
+    color: #2c3e50;
+  }
+
+  .btn-primary {
+    background-color: #2980b9;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background-color: #1f6391;
+  }
+
+  .btn-secondary:hover {
+    background-color: #dce0e0;
+  }
+*/
+ .container-voeux { 
+	max-width: 900px;
+	margin: auto; 
+	font-family: sans-serif; 
+	padding: 5px;
+}
+.container-voeux h2 ,h3, p{
+	margin:5px ;
+
+}
+.container-voeux h3{
+	color: #080d63;
+}
+  .card { 
+	background: #f9f9f9; 
+	padding: 20px; 
+	border-radius: 8px; 
+	margin-bottom: 20px; 
+}
+  .module-choice { 
+	margin-bottom: 20px; 
+	border: 1px solid #ccc; 
+	padding: 10px; 
+	border-radius: 5px; 
+}
+  label { 
+	display: block; 
+	margin-top: 10px;
+ }
+  select, input { 
+	width: 100%; 
+	padding: 5px; 
+	margin-top: 5px; 
+}
+  .module-details { 
+	background: #eef5ff; 
+	padding: 10px; 
+	margin-top: 10px; 
+	border-left: 4px solid #2980b9; 
+	display: none; 
+}
+#voeuxForm button{
+	padding: 10px;
+	background-color: #7fbcfe;
+	margin: 10px;
+	border-radius: 15px;
+	border: #d8e4f1;
+}
+#voeuxForm .card button{
+	padding: 9px;
+	background-color: #e4e5e6;
+	margin: 7px;
+	border-radius: 20px;
+	border: none;
 }
